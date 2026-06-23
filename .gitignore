@@ -9,3 +9,5 @@ coverage/
 tsconfig.tsbuildinfo
 .playwright-mcp/
 .superpowers/sdd/*.png
+public/sw.js
+public/swe-worker-*.js
