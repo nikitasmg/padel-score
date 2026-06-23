@@ -26,7 +26,9 @@
 
 ```
 package.json, tsconfig.json, next.config.mjs, postcss.config.mjs, vitest.config.ts
-tailwind.config.ts
+tailwind.config.ts, components.json (shadcn)
+lib/utils.ts            cn() — добавляется shadcn init
+components/ui/          button.tsx, input.tsx, switch.tsx, dialog.tsx (shadcn)
 app/
   layout.tsx            globals.css
   page.tsx              экран 01 Новый матч
@@ -177,16 +179,33 @@ export default function Page() {
 }
 ```
 
-- [ ] **Step 4: Проверить, что сборка/тест/дев поднимаются**
+- [ ] **Step 4: Инициализировать shadcn/ui и добавить базовые компоненты**
+
+shadcn ставится поверх уже настроенного Tailwind. Инициализация добавляет `components.json`,
+утилиту `lib/utils.ts` (`cn`), CSS-переменные в `globals.css` и алиасы.
+
+Run:
+```bash
+npx shadcn@latest init -d   # -d: дефолты (Neutral baseColor, CSS variables)
+npx shadcn@latest add button input switch dialog
+```
+Expected: создан `components.json`, `lib/utils.ts` с `cn(...)`, в `components/ui/` появились
+`button.tsx`, `input.tsx`, `switch.tsx`, `dialog.tsx`. Зависимости Radix установлены.
+
+> Примечание: если `init` спросит про существующий `tailwind.config.ts`/`globals.css` — разрешить
+> правки. Наши именованные токены (`accent`, `surface`, …) в `tailwind.config.ts` сохранить;
+> CSS-переменные shadcn сосуществуют с ними. Фирменный вид компонентов задаём своими классами.
+
+- [ ] **Step 5: Проверить, что сборка/тест/дев поднимаются**
 
 Run: `npx tsc --noEmit && npm test`
 Expected: tsc без ошибок; vitest сообщает "No test files found" (ещё нет тестов) и завершается успешно (или используем `vitest run --passWithNoTests`). Затем `npm run build` завершается успешно.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Commit**
 
 ```bash
 git add -A
-git commit -m "Инициализировать проект Next.js с Tailwind и Vitest"
+git commit -m "Инициализировать проект Next.js с Tailwind, shadcn/ui и Vitest"
 ```
 
 ---
@@ -1140,24 +1159,26 @@ export function PhoneScreen({
 
 - [ ] **Step 2: Toggle + SegmentedControl**
 
-Create `components/Toggle.tsx`:
+Create `components/Toggle.tsx` (обёртка над shadcn `Switch`, окрашенная в наш лайм):
 ```tsx
 "use client";
+import { Switch } from "@/components/ui/switch";
+
 export function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
-    <button
-      type="button"
-      onClick={() => onChange(!checked)}
-      className={`flex-1 flex items-center justify-between bg-surface2 rounded-2xl px-4 py-[14px] border ${checked ? "border-accent/30" : "border-white/[.06]"}`}
-    >
+    <label className={`flex-1 flex items-center justify-between bg-surface2 rounded-2xl px-4 py-[14px] border cursor-pointer ${checked ? "border-accent/30" : "border-white/[.06]"}`}>
       <span className="font-display font-semibold text-[14px] text-ink3">{label}</span>
-      <span className="relative w-[42px] h-6 rounded-xl transition-colors" style={{ background: checked ? "#c6f24e" : "#2a2d28" }}>
-        <span className="absolute top-[2px] w-5 h-5 rounded-full bg-bg transition-all" style={{ right: checked ? 2 : 20 }} />
-      </span>
-    </button>
+      <Switch
+        checked={checked}
+        onCheckedChange={onChange}
+        className="data-[state=checked]:bg-accent data-[state=unchecked]:bg-[#2a2d28]"
+      />
+    </label>
   );
 }
 ```
+> `Switch` из `components/ui/switch.tsx` (добавлен в Task 1). Лаймовый трек задаём через
+> `data-[state=checked]:bg-accent`; кружок у shadcn белый — оставляем как есть.
 
 Create `components/SegmentedControl.tsx`:
 ```tsx
@@ -1217,6 +1238,7 @@ import { useRouter } from "next/navigation";
 import { PhoneScreen } from "@/components/PhoneScreen";
 import { SegmentedControl } from "@/components/SegmentedControl";
 import { Toggle } from "@/components/Toggle";
+import { Input } from "@/components/ui/input";
 import { useMatchStore } from "@/store/matchStore";
 import type { Config } from "@/lib/padel/types";
 
@@ -1301,7 +1323,7 @@ function TeamBlock({ color, title, names, onName }: { color: string; title: stri
             <div className="w-10 h-10 rounded-full bg-[#1b1e1b] flex items-center justify-center font-display font-bold text-[16px]" style={{ border: `1.5px solid ${color}`, color }}>
               {n.charAt(0).toUpperCase() || "·"}
             </div>
-            <input value={n} onChange={(e) => onName(i, e.target.value)} className="flex-1 bg-transparent outline-none font-display font-semibold text-[16px] text-ink2" />
+            <Input value={n} onChange={(e) => onName(i, e.target.value)} className="flex-1 h-auto p-0 bg-transparent border-0 shadow-none focus-visible:ring-0 font-display font-semibold text-[16px] text-ink2" />
           </div>
         ))}
       </div>
@@ -1458,27 +1480,32 @@ export function ScoreButtons({ onA, onB, onUndo, battery }: { onA: () => void; o
 }
 ```
 
-Create `components/MatchCompleteOverlay.tsx`:
+Create `components/MatchCompleteOverlay.tsx` (на shadcn `Dialog`; открыт, пока матч завершён):
 ```tsx
 "use client";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import type { MatchState } from "@/lib/padel/types";
 
 export function MatchCompleteOverlay({ match, onNew, onBroadcast }: { match: MatchState; onNew: () => void; onBroadcast: () => void }) {
-  if (match.status !== "completed" || match.winner === undefined) return null;
+  const open = match.status === "completed" && match.winner !== undefined;
+  if (!open || match.winner === undefined) return null;
   const w = match.teams[match.winner].players.map((p) => p.name).join(" / ");
   return (
-    <div className="absolute inset-0 z-20 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center px-8 text-center">
-      <div className="font-mono font-semibold text-[12px] tracking-[.16em] uppercase text-accent mb-3">Матч завершён</div>
-      <div className="font-display font-extrabold text-[34px] text-ink leading-tight">{w}</div>
-      <div className="font-display font-medium text-[15px] text-muted mt-2">
-        Счёт по сетам {match.score[0].sets} : {match.score[1].sets}
-      </div>
-      <button onClick={onBroadcast} className="mt-8 w-full max-w-[260px] h-[54px] rounded-[18px] bg-accent font-display font-extrabold text-[17px] text-bg">Трансляция</button>
-      <button onClick={onNew} className="mt-3 w-full max-w-[260px] h-[54px] rounded-[18px] border border-white/15 font-display font-bold text-[16px] text-ink">Новый матч</button>
-    </div>
+    <Dialog open={open}>
+      <DialogContent className="bg-surface border border-white/10 rounded-[24px] px-8 py-10 text-center [&>button]:hidden">
+        <DialogTitle className="font-mono font-semibold text-[12px] tracking-[.16em] uppercase text-accent">Матч завершён</DialogTitle>
+        <div className="font-display font-extrabold text-[34px] text-ink leading-tight">{w}</div>
+        <div className="font-display font-medium text-[15px] text-muted">
+          Счёт по сетам {match.score[0].sets} : {match.score[1].sets}
+        </div>
+        <button onClick={onBroadcast} className="mt-6 w-full h-[54px] rounded-[18px] bg-accent font-display font-extrabold text-[17px] text-bg">Трансляция</button>
+        <button onClick={onNew} className="mt-3 w-full h-[54px] rounded-[18px] border border-white/15 font-display font-bold text-[16px] text-ink">Новый матч</button>
+      </DialogContent>
+    </Dialog>
   );
 }
 ```
+> `[&>button]:hidden` прячет дефолтную крестик-кнопку shadcn — закрытие только через действия.
 
 - [ ] **Step 4: Проверить сборку**
 

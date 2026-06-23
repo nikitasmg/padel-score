@@ -22,6 +22,9 @@
 
 - **Next.js (App Router)** + TypeScript.
 - **Tailwind CSS** для стилей; тема настроена под токены дизайна.
+- **shadcn/ui** как библиотека базовых компонентов (Switch, Input, Dialog, Button) поверх Radix;
+  фирменный лаймовый вид остаётся на наших Tailwind-токенах, shadcn даёт доступность и поведение.
+  Кастомные компоненты (ScoreBoard, CourtDiagram, PhoneScreen, SegmentedControl) — собственные.
 - **Zustand** для состояния приложения (обёртка над чистым движком), с persist в `localStorage`.
 - **@ducanh2912/next-pwa** — манифест, офлайн-кеш, установимость.
 - Шрифты через `next/font`: **Archivo** (дисплей) + **JetBrains Mono** (метки/цифры).
