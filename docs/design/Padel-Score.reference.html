@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- REFERENCE ONLY — imported from Claude Design "Padel Score.dc.html".
+     Source of truth for exact markup, spacing and color tokens of all 4 screens.
+     Not part of the build; <x-dc>/<helmet>/support.js are Claude-Design wrappers, ignore them. -->
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;-webkit-font-smoothing:antialiased}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  @keyframes ring{0%{box-shadow:0 0 0 0 rgba(198,242,78,.45)}100%{box-shadow:0 0 0 12px rgba(198,242,78,0)}}
+</style>
+</helmet>
+
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:60px;background:#161718;font-family:Archivo,system-ui,sans-serif">
+
+  <!-- ===== gallery header ===== -->
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;width:100%;max-width:1700px;margin-bottom:48px">
+    <div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:13px;height:13px;border-radius:50%;background:#c6f24e;box-shadow:0 0 16px rgba(198,242,78,.7)"></div>
+        <div style="font:800 34px Archivo;letter-spacing:-.02em;color:#f4f5f1">RALLY</div>
+      </div>
+      <div style="margin-top:8px;font:500 15px Archivo;color:#8c918a">Padel scorekeeping · тёмная тема · мобильное PWA</div>
+    </div>
+    <div style="font:500 12px 'JetBrains Mono';letter-spacing:.14em;text-transform:uppercase;color:#5c615a;text-align:right;line-height:1.7">
+      iOS / Android · 390×844<br>4 экрана · 1 направление
+    </div>
+  </div>
+
+  <!-- ===== frames row ===== -->
+  <div style="display:flex;gap:56px;align-items:flex-start">
+
+    <!-- ============================================================ -->
+    <!-- FRAME 1 — СОЗДАНИЕ МАТЧА                                       -->
+    <!-- ============================================================ -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 11px 'JetBrains Mono';letter-spacing:.16em;text-transform:uppercase;color:#7a7f78;margin-bottom:16px">01 · Новый матч</div>
+      <div style="background:#000;border-radius:50px;padding:11px;box-shadow:0 40px 90px -20px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.05),0 0 70px -28px rgba(198,242,78,.4)">
+        <div style="position:relative;width:390px;height:844px;border-radius:40px;overflow:hidden;background:radial-gradient(130% 70% at 50% -5%,rgba(198,242,78,.10),transparent 55%),#0a0b0a">
+          <!-- dynamic island -->
+          <div style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:108px;height:31px;background:#000;border-radius:20px;z-index:5"></div>
+          <!-- status bar -->
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:15px 28px 0;font:700 15px Archivo;color:#f2f3ef">
+            <span>9:41</span>
+            <span style="font:600 11px 'JetBrains Mono';color:#9a9f97">●●● 5G ▮</span>
+          </div>
+
+          <div style="padding:30px 22px 0;height:calc(100% - 36px);display:flex;flex-direction:column">
+            <!-- title -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:26px">
+              <div>
+                <div style="font:500 12px 'JetBrains Mono';letter-spacing:.12em;text-transform:uppercase;color:#c6f24e">Setup</div>
+                <div style="font:800 30px Archivo;letter-spacing:-.02em;color:#f4f5f1;margin-top:2px">Новый матч</div>
+              </div>
+              <div style="width:38px;height:38px;border-radius:50%;background:#17191700;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:#9a9f97;font:400 20px Archivo">✕</div>
+            </div>
+
+            <!-- format -->
+            <div style="font:600 11px 'JetBrains Mono';letter-spacing:.14em;text-transform:uppercase;color:#71766f;margin-bottom:12px">Формат</div>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
+              <div style="display:flex;align-items:center;justify-content:space-between;background:#121412;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px 16px">
+                <span style="font:600 15px Archivo;color:#cdd1c9">Сетов в матче</span>
+                <div style="display:flex;gap:6px">
+                  <div style="width:38px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font:700 15px Archivo;color:#6f746d;background:#0c0d0c;border:1px solid rgba(255,255,255,.06)">1</div>
+                  <div style="width:38px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font:700 15px Archivo;color:#0a0b0a;background:#c6f24e">3</div>
+                  <div style="width:38px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font:700 15px Archivo;color:#6f746d;background:#0c0d0c;border:1px solid rgba(255,255,255,.06)">5</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;background:#121412;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px 16px">
+                <span style="font:600 15px Archivo;color:#cdd1c9">Геймов в сете</span>
+                <div style="display:flex;gap:6px">
+                  <div style="width:38px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font:700 15px Archivo;color:#6f746d;background:#0c0d0c;border:1px solid rgba(255,255,255,.06)">4</div>
+                  <div style="width:38px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font:700 15px Archivo;color:#0a0b0a;background:#c6f24e">6</div>
+                  <div style="width:38px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font:700 15px Archivo;color:#6f746d;background:#0c0d0c;border:1px solid rgba(255,255,255,.06)">9</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px">
+                <div style="flex:1;display:flex;align-items:center;justify-content:space-between;background:#121412;border:1px solid rgba(198,242,78,.3);border-radius:16px;padding:14px 16px">
+                  <span style="font:600 14px Archivo;color:#cdd1c9">Golden Point</span>
+                  <div style="width:42px;height:24px;border-radius:12px;background:#c6f24e;position:relative"><div style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:#0a0b0a"></div></div>
+                </div>
+                <div style="flex:1;display:flex;align-items:center;justify-content:space-between;background:#121412;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px 16px">
+                  <span style="font:600 14px Archivo;color:#cdd1c9">Тай-брейк</span>
+                  <div style="width:42px;height:24px;border-radius:12px;background:#c6f24e;position:relative"><div style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:#0a0b0a"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- teams -->
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+              <div style="width:9px;height:9px;border-radius:50%;background:#c6f24e"></div>
+              <span style="font:600 11px 'JetBrains Mono';letter-spacing:.14em;text-transform:uppercase;color:#71766f">Команда A</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+              <div style="display:flex;align-items:center;gap:13px;background:#121412;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:11px 14px">
+                <div style="width:40px;height:40px;border-radius:50%;background:#1b1e1b;border:1.5px solid #c6f24e;display:flex;align-items:center;justify-content:center;font:700 16px Archivo;color:#c6f24e">А</div>
+                <span style="flex:1;font:600 16px Archivo;color:#eef0ea">Алекс</span>
+                <span style="font:500 13px Archivo;color:#5c615a">изм.</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:13px;background:#121412;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:11px 14px">
+                <div style="width:40px;height:40px;border-radius:50%;background:#1b1e1b;border:1.5px solid #c6f24e;display:flex;align-items:center;justify-content:center;font:700 16px Archivo;color:#c6f24e">М</div>
+                <span style="flex:1;font:600 16px Archivo;color:#eef0ea">Марко</span>
+                <span style="font:500 13px Archivo;color:#5c615a">изм.</span>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+              <div style="width:9px;height:9px;border-radius:50%;background:#e8e8e8"></div>
+              <span style="font:600 11px 'JetBrains Mono';letter-spacing:.14em;text-transform:uppercase;color:#71766f">Команда B</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:13px;background:#121412;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:11px 14px">
+                <div style="width:40px;height:40px;border-radius:50%;background:#1b1e1b;border:1.5px solid #cfd3cb;display:flex;align-items:center;justify-content:center;font:700 16px Archivo;color:#e8e8e8">Д</div>
+                <span style="flex:1;font:600 16px Archivo;color:#eef0ea">Дима</span>
+                <span style="font:500 13px Archivo;color:#5c615a">изм.</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:13px;background:#121412;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:11px 14px">
+                <div style="width:40px;height:40px;border-radius:50%;background:#1b1e1b;border:1.5px solid #cfd3cb;display:flex;align-items:center;justify-content:center;font:700 16px Archivo;color:#e8e8e8">С</div>
+                <span style="flex:1;font:600 16px Archivo;color:#eef0ea">Соня</span>
+                <span style="font:500 13px Archivo;color:#5c615a">изм.</span>
+              </div>
+            </div>
+
+            <!-- cta -->
+            <div style="margin-top:auto;padding-bottom:14px;padding-top:18px">
+              <div style="display:flex;align-items:center;justify-content:center;gap:10px;height:58px;border-radius:18px;background:#c6f24e;font:800 18px Archivo;color:#0a0b0a;box-shadow:0 12px 30px -8px rgba(198,242,78,.5)">Начать матч <span style="font-size:20px">→</span></div>
+              <div style="text-align:center;margin-top:12px;font:500 13px Archivo;color:#5c615a">Корт 3 · Padel Club Moscow</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- FRAME 2 — КЛИКЕР                                              -->
+    <!-- ============================================================ -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 11px 'JetBrains Mono';letter-spacing:.16em;text-transform:uppercase;color:#7a7f78;margin-bottom:16px">02 · Кликер</div>
+      <div style="background:#000;border-radius:50px;padding:11px;box-shadow:0 40px 90px -20px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.05),0 0 70px -28px rgba(198,242,78,.4)">
+        <div style="position:relative;width:390px;height:844px;border-radius:40px;overflow:hidden;background:radial-gradient(130% 70% at 50% -5%,rgba(198,242,78,.08),transparent 55%),#0a0b0a">
+          <div style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:108px;height:31px;background:#000;border-radius:20px;z-index:5"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:15px 28px 0;font:700 15px Archivo;color:#f2f3ef">
+            <span>9:41</span>
+            <span style="font:600 11px 'JetBrains Mono';color:#9a9f97">●●● 5G ▮</span>
+          </div>
+
+          <div style="padding:30px 22px 0">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:26px">
+              <div>
+                <div style="font:500 12px 'JetBrains Mono';letter-spacing:.12em;text-transform:uppercase;color:#c6f24e">Bluetooth</div>
+                <div style="font:800 30px Archivo;letter-spacing:-.02em;color:#f4f5f1;margin-top:2px">Кликер</div>
+              </div>
+              <div style="width:38px;height:38px;border-radius:50%;background:rgba(198,242,78,.12);display:flex;align-items:center;justify-content:center;color:#c6f24e;font:700 17px Archivo">✶</div>
+            </div>
+
+            <!-- connected device -->
+            <div style="position:relative;background:linear-gradient(180deg,#16191500,#121412);border:1px solid rgba(198,242,78,.28);border-radius:22px;padding:22px;margin-bottom:22px;overflow:hidden">
+              <div style="position:absolute;top:18px;right:20px;display:flex;align-items:center;gap:7px">
+                <div style="width:8px;height:8px;border-radius:50%;background:#c6f24e;animation:pulse 1.8s infinite"></div>
+                <span style="font:600 11px 'JetBrains Mono';letter-spacing:.1em;text-transform:uppercase;color:#c6f24e">Подключён</span>
+              </div>
+              <!-- clicker glyph -->
+              <div style="display:flex;align-items:center;gap:20px">
+                <div style="width:78px;height:104px;border-radius:22px;background:#0c0d0c;border:1.5px solid rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;flex:none">
+                  <div style="width:38px;height:38px;border-radius:50%;background:#c6f24e;animation:ring 2s infinite"></div>
+                  <div style="width:38px;height:38px;border-radius:50%;background:#1b1e1b;border:1px solid rgba(255,255,255,.12)"></div>
+                </div>
+                <div>
+                  <div style="font:700 19px Archivo;color:#f2f3ef">Padel Clicker P1</div>
+                  <div style="font:500 13px Archivo;color:#8c918a;margin-top:3px">2 кнопки · BLE</div>
+                  <div style="display:flex;align-items:center;gap:8px;margin-top:14px">
+                    <div style="width:46px;height:16px;border-radius:5px;border:1.5px solid #c6f24e;padding:2px;display:flex"><div style="width:78%;background:#c6f24e;border-radius:2px"></div></div>
+                    <span style="font:600 13px 'JetBrains Mono';color:#c6f24e">82%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- button mode -->
+            <div style="font:600 11px 'JetBrains Mono';letter-spacing:.14em;text-transform:uppercase;color:#71766f;margin-bottom:12px">Назначение кнопок</div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px">
+              <div style="display:flex;align-items:center;gap:14px;background:#121412;border:1px solid rgba(198,242,78,.3);border-radius:16px;padding:15px 16px">
+                <div style="width:22px;height:22px;border-radius:50%;border:2px solid #c6f24e;display:flex;align-items:center;justify-content:center"><div style="width:11px;height:11px;border-radius:50%;background:#c6f24e"></div></div>
+                <div style="flex:1">
+                  <div style="font:600 15px Archivo;color:#eef0ea">2 кнопки — раздельно</div>
+                  <div style="font:500 13px Archivo;color:#8c918a;margin-top:1px">Лево → очко A · Право → очко B</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:14px;background:#121412;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:15px 16px">
+                <div style="width:22px;height:22px;border-radius:50%;border:2px solid #43473f"></div>
+                <div style="flex:1">
+                  <div style="font:600 15px Archivo;color:#cdd1c9">1 кнопка — по нажатиям</div>
+                  <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px">
+                    <div style="display:flex;align-items:center;gap:9px"><span style="font:600 11px 'JetBrains Mono';color:#0a0b0a;background:#9a9f97;border-radius:5px;padding:2px 7px;flex:none">1×</span><span style="font:500 13px Archivo;color:#8c918a">очко подающей команде</span></div>
+                    <div style="display:flex;align-items:center;gap:9px"><span style="font:600 11px 'JetBrains Mono';color:#0a0b0a;background:#9a9f97;border-radius:5px;padding:2px 7px;flex:none">2×</span><span style="font:500 13px Archivo;color:#8c918a">очко другой команде</span></div>
+                    <div style="display:flex;align-items:center;gap:9px"><span style="font:600 11px 'JetBrains Mono';color:#0a0b0a;background:#9a9f97;border-radius:5px;padding:2px 7px;flex:none">⏷</span><span style="font:500 13px Archivo;color:#8c918a">долгое — отменить последнее</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- holder -->
+            <div style="display:flex;align-items:center;justify-content:space-between;background:#121412;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px 16px;margin-bottom:22px">
+              <div style="display:flex;align-items:center;gap:11px">
+                <div style="width:34px;height:34px;border-radius:50%;background:#1b1e1b;border:1.5px solid #c6f24e;display:flex;align-items:center;justify-content:center;font:700 14px Archivo;color:#c6f24e">А</div>
+                <div>
+                  <div style="font:500 11px 'JetBrains Mono';color:#71766f;text-transform:uppercase;letter-spacing:.1em">У кого кликер</div>
+                  <div style="font:600 15px Archivo;color:#eef0ea;margin-top:1px">Алекс · Команда A</div>
+                </div>
+              </div>
+              <span style="font:500 13px Archivo;color:#5c615a">сменить</span>
+            </div>
+
+            <!-- test -->
+            <div style="border:1px dashed rgba(198,242,78,.35);border-radius:16px;padding:16px;text-align:center">
+              <div style="font:600 14px Archivo;color:#cdd1c9">Нажмите кнопку для проверки</div>
+              <div style="font:500 12px 'JetBrains Mono';color:#c6f24e;margin-top:6px">последнее: ЛЕВАЯ · +1 команде A</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- FRAME 3 — АКТИВНЫЙ МАТЧ (hero)                                -->
+    <!-- ============================================================ -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 11px 'JetBrains Mono';letter-spacing:.16em;text-transform:uppercase;color:#c6f24e;margin-bottom:16px">03 · Активный матч</div>
+      <div style="background:#000;border-radius:50px;padding:11px;box-shadow:0 40px 90px -20px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.05),0 0 90px -22px rgba(198,242,78,.55)">
+        <div style="position:relative;width:390px;height:844px;border-radius:40px;overflow:hidden;background:radial-gradient(120% 60% at 50% -5%,rgba(198,242,78,.12),transparent 55%),#0a0b0a">
+          <div style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:108px;height:31px;background:#000;border-radius:20px;z-index:5"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:15px 28px 0;font:700 15px Archivo;color:#f2f3ef">
+            <span>9:41</span>
+            <span style="font:600 11px 'JetBrains Mono';color:#9a9f97">●●● 5G ▮</span>
+          </div>
+
+          <div style="padding:26px 22px 0;height:calc(100% - 36px);display:flex;flex-direction:column">
+            <!-- top bar -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
+              <div style="display:flex;align-items:center;gap:9px">
+                <div style="width:7px;height:7px;border-radius:50%;background:#ff5c38;animation:pulse 1.6s infinite"></div>
+                <span style="font:700 13px 'JetBrains Mono';letter-spacing:.1em;color:#ff5c38">LIVE</span>
+                <span style="font:600 13px 'JetBrains Mono';color:#71766f;margin-left:6px">СЕТ 2</span>
+              </div>
+              <span style="font:600 14px 'JetBrains Mono';color:#cdd1c9">00:42:18</span>
+              <span style="font:400 22px Archivo;color:#9a9f97">⋯</span>
+            </div>
+
+            <!-- scoreboard -->
+            <div style="background:#101210;border:1px solid rgba(255,255,255,.07);border-radius:22px;overflow:hidden">
+              <!-- header -->
+              <div style="display:grid;grid-template-columns:1fr 34px 34px 34px 64px;align-items:center;padding:11px 18px 9px;border-bottom:1px solid rgba(255,255,255,.06)">
+                <span style="font:600 10px 'JetBrains Mono';letter-spacing:.12em;text-transform:uppercase;color:#5c615a">Команды</span>
+                <span style="text-align:center;font:600 10px 'JetBrains Mono';color:#5c615a">1</span>
+                <span style="text-align:center;font:600 10px 'JetBrains Mono';color:#c6f24e">2</span>
+                <span style="text-align:center;font:600 10px 'JetBrains Mono';color:#5c615a">3</span>
+                <span style="text-align:center;font:600 10px 'JetBrains Mono';letter-spacing:.08em;text-transform:uppercase;color:#5c615a">Очко</span>
+              </div>
+              <!-- team A (serving) -->
+              <div style="position:relative;display:grid;grid-template-columns:1fr 34px 34px 34px 64px;align-items:center;padding:16px 18px;background:linear-gradient(90deg,rgba(198,242,78,.07),transparent 60%)">
+                <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:#c6f24e"></div>
+                <div style="display:flex;align-items:center;gap:9px">
+                  <div style="width:16px;height:16px;border-radius:50%;background:#c6f24e;display:flex;align-items:center;justify-content:center;flex:none"><div style="width:7px;height:7px;border-radius:50%;background:#0a0b0a"></div></div>
+                  <div style="font:700 16px Archivo;color:#f4f5f1;line-height:1.15">Алекс <span style="color:#8c918a;font-weight:500">/ Марко</span></div>
+                </div>
+                <span style="text-align:center;font:700 17px Archivo;color:#8c918a;font-variant-numeric:tabular-nums">6</span>
+                <span style="text-align:center;font:700 18px Archivo;color:#f4f5f1;font-variant-numeric:tabular-nums">4</span>
+                <span style="text-align:center;font:700 17px Archivo;color:#3a3f38">–</span>
+                <span style="text-align:center;font:800 30px Archivo;color:#c6f24e;font-variant-numeric:tabular-nums">40</span>
+              </div>
+              <!-- team B -->
+              <div style="display:grid;grid-template-columns:1fr 34px 34px 34px 64px;align-items:center;padding:16px 18px;border-top:1px solid rgba(255,255,255,.06)">
+                <div style="display:flex;align-items:center;gap:9px">
+                  <div style="width:16px;height:16px;border-radius:50%;border:1.5px solid #5c615a;flex:none"></div>
+                  <div style="font:700 16px Archivo;color:#f4f5f1;line-height:1.15">Дима <span style="color:#8c918a;font-weight:500">/ Соня</span></div>
+                </div>
+                <span style="text-align:center;font:700 17px Archivo;color:#8c918a;font-variant-numeric:tabular-nums">3</span>
+                <span style="text-align:center;font:700 18px Archivo;color:#f4f5f1;font-variant-numeric:tabular-nums">5</span>
+                <span style="text-align:center;font:700 17px Archivo;color:#3a3f38">–</span>
+                <span style="text-align:center;font:800 30px Archivo;color:#cdd1c9;font-variant-numeric:tabular-nums">30</span>
+              </div>
+            </div>
+
+            <!-- serve / court -->
+            <div style="margin-top:20px;background:#101210;border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:18px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                <span style="font:600 11px 'JetBrains Mono';letter-spacing:.12em;text-transform:uppercase;color:#71766f">Подача</span>
+                <span style="font:600 13px Archivo;color:#c6f24e">Алекс · правый квадрат · Deuce</span>
+              </div>
+              <!-- court diagram -->
+              <svg viewBox="0 0 346 150" style="width:100%;display:block">
+                <rect x="1" y="1" width="344" height="148" rx="8" fill="#0c0d0c" stroke="rgba(255,255,255,.12)" stroke-width="1.5"/>
+                <line x1="173" y1="4" x2="173" y2="146" stroke="#c6f24e" stroke-width="1.5" stroke-dasharray="4 5" opacity=".7"/>
+                <line x1="64" y1="4" x2="64" y2="146" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+                <line x1="282" y1="4" x2="282" y2="146" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+                <line x1="64" y1="75" x2="282" y2="75" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+                <line x1="118" y1="112" x2="228" y2="112" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+                <!-- serve trajectory: from server (left back, deuce/top) to right service box deuce -->
+                <line x1="40" y1="46" x2="228" y2="110" stroke="#c6f24e" stroke-width="1.5" stroke-dasharray="3 4" opacity=".6"/>
+                <!-- team A players (left) -->
+                <circle cx="40" cy="46" r="13" fill="#c6f24e"/>
+                <circle cx="40" cy="46" r="20" fill="none" stroke="#c6f24e" stroke-width="1.5" opacity=".4"/>
+                <circle cx="40" cy="110" r="11" fill="#1b1e1b" stroke="#5c615a" stroke-width="1.5"/>
+                <!-- team B players (right) -->
+                <circle cx="306" cy="46" r="11" fill="#1b1e1b" stroke="#cfd3cb" stroke-width="1.5"/>
+                <circle cx="306" cy="110" r="11" fill="#1b1e1b" stroke="#cfd3cb" stroke-width="1.5"/>
+                <text x="40" y="50" text-anchor="middle" font-family="Archivo" font-size="11" font-weight="800" fill="#0a0b0a">А</text>
+                <text x="40" y="114" text-anchor="middle" font-family="Archivo" font-size="10" font-weight="700" fill="#9a9f97">М</text>
+                <text x="306" y="50" text-anchor="middle" font-family="Archivo" font-size="10" font-weight="700" fill="#cfd3cb">Д</text>
+                <text x="306" y="114" text-anchor="middle" font-family="Archivo" font-size="10" font-weight="700" fill="#cfd3cb">С</text>
+              </svg>
+            </div>
+
+            <!-- scoring buttons -->
+            <div style="margin-top:auto;padding-bottom:16px">
+              <div style="display:flex;gap:12px;margin-bottom:12px">
+                <div style="flex:1;height:84px;border-radius:20px;background:#c6f24e;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 12px 28px -10px rgba(198,242,78,.5)">
+                  <span style="font:800 22px Archivo;color:#0a0b0a">+ Очко</span>
+                  <span style="font:700 12px 'JetBrains Mono';color:rgba(10,11,10,.65);margin-top:2px">КОМАНДА A</span>
+                </div>
+                <div style="flex:1;height:84px;border-radius:20px;background:#16191500;border:1.5px solid rgba(255,255,255,.14);display:flex;flex-direction:column;align-items:center;justify-content:center">
+                  <span style="font:800 22px Archivo;color:#f4f5f1">+ Очко</span>
+                  <span style="font:700 12px 'JetBrains Mono';color:#8c918a;margin-top:2px">КОМАНДА B</span>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:8px;font:600 13px Archivo;color:#9a9f97"><span style="font-size:16px">↶</span> Отменить</div>
+                <div style="display:flex;align-items:center;gap:8px;background:rgba(198,242,78,.1);border:1px solid rgba(198,242,78,.25);border-radius:20px;padding:7px 14px">
+                  <div style="width:7px;height:7px;border-radius:50%;background:#c6f24e;animation:pulse 1.8s infinite"></div>
+                  <span style="font:600 12px 'JetBrains Mono';color:#c6f24e">Кликер · 82%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- FRAME 4 — РЕЖИМ ТРАНСЛЯЦИИ (landscape)                        -->
+    <!-- ============================================================ -->
+    <div style="flex:none;width:844px">
+      <div style="font:600 11px 'JetBrains Mono';letter-spacing:.16em;text-transform:uppercase;color:#7a7f78;margin-bottom:16px">04 · Трансляция на корт</div>
+      <div style="background:#000;border-radius:50px;padding:11px;box-shadow:0 40px 90px -20px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.05),0 0 90px -24px rgba(198,242,78,.5)">
+        <div style="position:relative;width:844px;height:390px;border-radius:40px;overflow:hidden;background:radial-gradient(80% 130% at 50% 120%,rgba(36,92,48,.32),transparent 60%),radial-gradient(60% 90% at 50% -20%,rgba(198,242,78,.10),transparent 60%),#070807">
+          <!-- island left -->
+          <div style="position:absolute;left:11px;top:50%;transform:translateY(-50%);width:31px;height:108px;background:#000;border-radius:20px;z-index:5"></div>
+
+          <!-- top strip -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 40px 0">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:8px;height:8px;border-radius:50%;background:#ff5c38;animation:pulse 1.6s infinite"></div>
+              <span style="font:700 13px 'JetBrains Mono';letter-spacing:.14em;color:#ff5c38">LIVE</span>
+            </div>
+            <div style="font:700 14px 'JetBrains Mono';letter-spacing:.2em;text-transform:uppercase;color:#9a9f97">Сет 2 · Корт 3 · до 6 геймов</div>
+            <div style="font:600 14px 'JetBrains Mono';color:#cdd1c9">00:42:18</div>
+          </div>
+
+          <!-- main split -->
+          <div style="display:grid;grid-template-columns:1fr 1px 1fr;height:268px;padding:0 20px;align-items:center">
+            <!-- team A -->
+            <div style="padding:0 36px;position:relative">
+              <div style="display:flex;align-items:center;gap:11px;margin-bottom:6px">
+                <div style="width:11px;height:11px;border-radius:50%;background:#c6f24e;box-shadow:0 0 12px rgba(198,242,78,.7)"></div>
+                <span style="font:800 22px Archivo;letter-spacing:-.01em;color:#f4f5f1">Алекс / Марко</span>
+              </div>
+              <div style="display:flex;align-items:flex-end;gap:24px;margin-top:14px">
+                <div style="font:900 132px Archivo;line-height:.82;color:#c6f24e;font-variant-numeric:tabular-nums;letter-spacing:-.04em;text-shadow:0 0 50px rgba(198,242,78,.35)">40</div>
+                <div style="display:flex;flex-direction:column;gap:10px;padding-bottom:14px">
+                  <div style="display:flex;align-items:center;gap:9px">
+                    <span style="font:600 11px 'JetBrains Mono';letter-spacing:.1em;color:#5c615a;width:48px">СЕТЫ</span>
+                    <span style="font:800 26px Archivo;color:#f4f5f1;font-variant-numeric:tabular-nums">1</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:9px">
+                    <span style="font:600 11px 'JetBrains Mono';letter-spacing:.1em;color:#5c615a;width:48px">ГЕЙМЫ</span>
+                    <span style="font:800 26px Archivo;color:#f4f5f1;font-variant-numeric:tabular-nums">4</span>
+                  </div>
+                </div>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:9px;margin-top:18px;background:rgba(198,242,78,.14);border:1px solid rgba(198,242,78,.35);border-radius:20px;padding:7px 15px">
+                <div style="width:14px;height:14px;border-radius:50%;background:#c6f24e;animation:ring 2s infinite"></div>
+                <span style="font:700 12px 'JetBrains Mono';letter-spacing:.12em;color:#c6f24e">ПОДАЧА · DEUCE</span>
+              </div>
+            </div>
+
+            <div style="width:1px;height:200px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.16),transparent);justify-self:center"></div>
+
+            <!-- team B -->
+            <div style="padding:0 36px;text-align:right">
+              <div style="display:flex;align-items:center;gap:11px;margin-bottom:6px;justify-content:flex-end">
+                <span style="font:800 22px Archivo;letter-spacing:-.01em;color:#f4f5f1">Дима / Соня</span>
+                <div style="width:11px;height:11px;border-radius:50%;background:#e8e8e8"></div>
+              </div>
+              <div style="display:flex;align-items:flex-end;gap:24px;margin-top:14px;justify-content:flex-end">
+                <div style="display:flex;flex-direction:column;gap:10px;padding-bottom:14px;align-items:flex-end">
+                  <div style="display:flex;align-items:center;gap:9px">
+                    <span style="font:800 26px Archivo;color:#f4f5f1;font-variant-numeric:tabular-nums">0</span>
+                    <span style="font:600 11px 'JetBrains Mono';letter-spacing:.1em;color:#5c615a;width:48px;text-align:left">СЕТЫ</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:9px">
+                    <span style="font:800 26px Archivo;color:#f4f5f1;font-variant-numeric:tabular-nums">5</span>
+                    <span style="font:600 11px 'JetBrains Mono';letter-spacing:.1em;color:#5c615a;width:48px;text-align:left">ГЕЙМЫ</span>
+                  </div>
+                </div>
+                <div style="font:900 132px Archivo;line-height:.82;color:#eef0ea;font-variant-numeric:tabular-nums;letter-spacing:-.04em">30</div>
+              </div>
+              <div style="margin-top:18px;height:34px"></div>
+            </div>
+          </div>
+
+          <!-- bottom strip -->
+          <div style="position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:0 40px 22px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div style="width:9px;height:9px;border-radius:50%;background:#c6f24e"></div>
+              <span style="font:800 16px Archivo;letter-spacing:-.01em;color:#f4f5f1">RALLY</span>
+            </div>
+            <div style="font:600 12px 'JetBrains Mono';letter-spacing:.16em;text-transform:uppercase;color:#5c615a">Нажмите на экран, чтобы выйти из трансляции</div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:7px;height:7px;border-radius:50%;background:#c6f24e;animation:pulse 1.8s infinite"></div>
+              <span style="font:600 12px 'JetBrains Mono';color:#c6f24e">Кликер · 82%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
