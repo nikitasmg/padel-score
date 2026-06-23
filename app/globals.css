@@ -29,6 +29,8 @@ html, body { margin: 0; background: #0a0b0a; -webkit-font-smoothing: antialiased
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted-foreground: var(--muted-fg);
+  --color-accent-foreground: var(--accent-fg);
   --color-destructive: var(--destructive);
   --color-border: var(--border);
   --color-input: var(--input-border);
