@@ -55,3 +55,9 @@ Task 14: complete (commit fe574df, экран трансляции, Playwright l
   Проверено Playwright: reload /match сохраняет счёт (15), URL остаётся /match. Коммит выше.
 Task 15: complete (commit d639d8c, экран кликера, Playwright OK, скриншот сверен с FRAME 2).
 Task 16: complete (commit 5732248). Serwist НЕ поддерживает Next16/Turbopack (issue #54) → fallback: manifest-only PWA (устанавливается), SW/офлайн отложены.
+Task 17: complete. Финальное ревью (opus) — READY TO MERGE.
+  Исправлено: (Important) ротация подачи в тай-брейке + тест (37/37); (Important) hydration mismatch →
+  skipHydration + rehydrate в useEffect (проверено Playwright: reload /match без ошибок консоли, матч цел);
+  (Minor) Новый матч → clear() вместо reset(); SVG-иконка PWA вместо 1×1 заглушек (warning манифеста убран);
+  CourtDiagram → font-display. Оставлено осознанно: dead shadcn dialog/button, SW отложён (Serwist+Turbopack).
+  Финал: vitest 37/37, tsc OK, build OK, 4 экрана проверены Playwright.
