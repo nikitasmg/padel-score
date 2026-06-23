@@ -25,7 +25,7 @@ export function CourtDiagram({ match }: { match: MatchState }) {
                   <circle cx={cx} cy={cy} r="20" fill="none" stroke="#c6f24e" strokeWidth="1.5" opacity=".4" />
                 </>
               : <circle cx={cx} cy={cy} r="11" fill="#1b1e1b" stroke={teamColor} strokeWidth="1.5" />}
-            <text x={cx} y={cy + 4} textAnchor="middle" fontFamily="Archivo" fontSize="10" fontWeight="700" fill={p.isServer ? "#0a0b0a" : teamColor}>{label}</text>
+            <text x={cx} y={cy + 4} textAnchor="middle" className="font-display" fontSize="10" fontWeight="700" fill={p.isServer ? "#0a0b0a" : teamColor}>{label}</text>
           </g>
         );
       })}
