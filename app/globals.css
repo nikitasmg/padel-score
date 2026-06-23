@@ -1,10 +1,42 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0a0b0a; --color-surface: #101210; --color-surface2: #121412; --color-surface3: #0c0d0c;
+  --color-accent: #c6f24e; --color-ink: #f4f5f1; --color-ink2: #eef0ea; --color-ink3: #cdd1c9;
+  --color-muted: #8c918a; --color-muted2: #71766f; --color-muted3: #5c615a; --color-muted4: #3a3f38;
+  --color-live: #ff5c38; --color-broadcast: #070807;
+  --font-display: var(--font-manrope), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), monospace;
+  --animate-pulse2: pulse2 1.8s infinite;
+  --animate-ring: ring 2s infinite;
+}
+@keyframes pulse2 { 0%,100% { opacity: 1 } 50% { opacity: .3 } }
+@keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(198,242,78,.45) } 100% { box-shadow: 0 0 0 12px rgba(198,242,78,0) } }
 
 html, body { margin: 0; background: #0a0b0a; -webkit-font-smoothing: antialiased; }
 * { box-sizing: border-box; }
 .tnum { font-variant-numeric: tabular-nums; }
+
+/* shadcn semantic tokens mapped to Tailwind v4 utilities */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input-border);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+}
 
 @layer base {
   /* shadcn CSS variable tokens — coexist with our named Tailwind tokens */
@@ -41,10 +73,10 @@ html, body { margin: 0; background: #0a0b0a; -webkit-font-smoothing: antialiased
     --sidebar-accent: oklch(0.269 0 0); --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%); --sidebar-ring: oklch(0.556 0 0);
   }
-  /* shadcn base resets — avoid @apply with undefined classes; use direct CSS instead */
+  /* shadcn base resets */
   * { border-color: var(--border); }
   body { background-color: var(--background); color: var(--foreground); }
-  html { font-family: var(--font-archivo, system-ui, sans-serif); }
+  html { font-family: var(--font-manrope, system-ui, sans-serif); }
   /* Radix/shadcn keyframes */
   @keyframes accordion-down { from { height: 0; } to { height: var(--radix-accordion-content-height, auto); } }
   @keyframes accordion-up { from { height: var(--radix-accordion-content-height, auto); } to { height: 0; } }
