@@ -1,5 +1,6 @@
 import type { Config, MatchState, MatchSnapshot, Team, TeamIndex, TeamScore } from "./types";
 import { isGameWon, isTiebreakWon, setsToWin } from "./rules";
+import { nextServer } from "./serve";
 
 function emptyTeamScore(): TeamScore {
   return { points: 0, games: [0], sets: 0 };
@@ -24,19 +25,6 @@ function snapshot(s: MatchState): MatchSnapshot {
   return structuredClone(rest);
 }
 
-// Временная ротация подачи (заменяется в Task 7 импортом из ./serve)
-function advanceServe(s: MatchState): MatchState["serving"] {
-  const order: Array<MatchState["serving"]> = [
-    { team: 0, player: 0, side: "deuce" },
-    { team: 1, player: 0, side: "deuce" },
-    { team: 0, player: 1, side: "deuce" },
-    { team: 1, player: 1, side: "deuce" },
-  ];
-  const idx = order.findIndex(
-    (o) => o.team === s.serving.team && o.player === s.serving.player,
-  );
-  return order[(idx + 1) % order.length];
-}
 
 export function scorePoint(state: MatchState, team: TeamIndex): MatchState {
   if (state.status === "completed") return state;
@@ -65,8 +53,8 @@ export function scorePoint(state: MatchState, team: TeamIndex): MatchState {
 
   resolveSetAndMatch(s, team, other);
   if (s.status === "in_progress") {
-    s.serving = advanceServe(s);
-    s.serving = { ...s.serving, side: "deuce" };
+    const ns = nextServer({ team: s.serving.team, player: s.serving.player });
+    s.serving = { team: ns.team, player: ns.player, side: "deuce" };
   }
   return s;
 }
