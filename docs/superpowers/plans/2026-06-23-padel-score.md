@@ -932,8 +932,16 @@ describe("pointLabel", () => {
     expect(pointLabel(s, 1)).toBe("40");
   });
   it("в тай-брейке показывает сырые очки", () => {
-    // не обязательно доводить до тай-брейка здесь; проверяется в e2e движка
-    expect(true).toBe(true);
+    // довести сет до 6-6 → тай-брейк, проверить что очки выводятся числом
+    let s = createMatch({ ...cfg, tiebreak: true }, teams, 0);
+    for (let g = 0; g < 6; g++) {
+      for (let p = 0; p < 4; p++) s = scorePoint(s, 0);
+      for (let p = 0; p < 4; p++) s = scorePoint(s, 1);
+    }
+    expect(s.inTiebreak).toBe(true);
+    s = scorePoint(s, 0); s = scorePoint(s, 0); // 2-0 в тай-брейке
+    expect(pointLabel(s, 0)).toBe("2");
+    expect(pointLabel(s, 1)).toBe("0");
   });
 });
 
