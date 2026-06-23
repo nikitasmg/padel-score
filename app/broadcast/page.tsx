@@ -18,6 +18,10 @@ export default function BroadcastPage() {
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
+    void useMatchStore.persist.rehydrate();
+  }, []);
+
+  useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, []);

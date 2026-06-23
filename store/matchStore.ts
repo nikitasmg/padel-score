@@ -32,6 +32,9 @@ export const useMatchStore = create<MatchStore>()(
       name: "rally-match",
       // Персистим только сам матч; флаг гидратации не сохраняем.
       partialize: (state) => ({ match: state.match }),
+      // skipHydration: восстановление запускаем вручную в useEffect страниц,
+      // чтобы первый клиентский рендер совпадал с серверным (нет hydration mismatch).
+      skipHydration: true,
       onRehydrateStorage: () => (state) => { state?.setHasHydrated(true); },
     },
   ),

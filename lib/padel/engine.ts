@@ -42,6 +42,15 @@ export function scorePoint(state: MatchState, team: TeamIndex): MatchState {
   const gameWon = s.inTiebreak ? isTiebreakWon(pts, opp) : isGameWon(pts, opp, cfg);
   if (!gameWon) {
     s.serving = updateSide(s);
+    // В тай-брейке подача переходит после 1-го очка, затем каждые 2 очка
+    // (по порядку SERVE_ORDER): смена ровно на нечётной сумме разыгранных очков.
+    if (s.inTiebreak) {
+      const totalTb = s.score[0].points + s.score[1].points;
+      if (totalTb % 2 === 1) {
+        const ns = nextServer({ team: s.serving.team, player: s.serving.player });
+        s.serving = { team: ns.team, player: ns.player, side: s.serving.side };
+      }
+    }
     return s;
   }
 

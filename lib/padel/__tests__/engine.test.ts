@@ -168,6 +168,19 @@ describe("тай-брейк", () => {
     const s = to6to6({ ...cfg, tiebreak: false });
     expect(s.inTiebreak).toBe(false);
   });
+
+  it("подача в тай-брейке меняется после 1-го очка и держится 2 очка", () => {
+    let s = to6to6();
+    const s0 = { ...s.serving }; // стартовый подающий тай-брейка
+    s = scorePoint(s, 0); // 1-е очко → смена подачи
+    const s1 = { ...s.serving };
+    expect(s1.team === s0.team && s1.player === s0.player).toBe(false);
+    s = scorePoint(s, 1); // 2-е очко → подача та же
+    expect(s.serving.team).toBe(s1.team);
+    expect(s.serving.player).toBe(s1.player);
+    s = scorePoint(s, 0); // 3-е очко → снова смена
+    expect(s.serving.team === s1.team && s.serving.player === s1.player).toBe(false);
+  });
 });
 
 describe("undo", () => {

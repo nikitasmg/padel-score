@@ -15,10 +15,14 @@ export default function MatchPage() {
   const match = useMatchStore((s) => s.match);
   const point = useMatchStore((s) => s.point);
   const undoPoint = useMatchStore((s) => s.undoPoint);
-  const reset = useMatchStore((s) => s.reset);
+  const clear = useMatchStore((s) => s.clear);
   const hasHydrated = useMatchStore((s) => s.hasHydrated);
   const battery = useClickerStore((s) => s.battery);
   const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    void useMatchStore.persist.rehydrate();
+  }, []);
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000);
@@ -72,7 +76,7 @@ export default function MatchPage() {
 
       <MatchCompleteOverlay
         match={match}
-        onNew={() => { reset(); router.push("/"); }}
+        onNew={() => { clear(); router.push("/"); }}
         onBroadcast={() => router.push("/broadcast")}
       />
     </PhoneScreen>
