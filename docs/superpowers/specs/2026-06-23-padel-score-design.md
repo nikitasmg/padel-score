@@ -21,13 +21,16 @@
 ## 2. Технологический стек
 
 - **Next.js (App Router)** + TypeScript.
-- **Tailwind CSS** для стилей; тема настроена под токены дизайна.
-- **shadcn/ui** как библиотека базовых компонентов (Switch, Input, Dialog, Button) поверх Radix;
-  фирменный лаймовый вид остаётся на наших Tailwind-токенах, shadcn даёт доступность и поведение.
+- **Tailwind CSS v4** (CSS-first: токены в `@theme` внутри `globals.css`, без `tailwind.config.ts`).
+- **shadcn/ui** (v4, стиль base-nova) как библиотека базовых компонентов (Switch, Input, Dialog,
+  Button); фирменный лаймовый вид остаётся на наших токенах, shadcn даёт доступность и поведение.
   Кастомные компоненты (ScoreBoard, CourtDiagram, PhoneScreen, SegmentedControl) — собственные.
 - **Zustand** для состояния приложения (обёртка над чистым движком), с persist в `localStorage`.
-- **@ducanh2912/next-pwa** — манифест, офлайн-кеш, установимость.
-- Шрифты через `next/font`: **Archivo** (дисплей) + **JetBrains Mono** (метки/цифры).
+- **Serwist (@serwist/next)** — service worker, офлайн-кеш, установимость (Turbopack/Next 16).
+  Манифест — через `app/manifest.ts`.
+- Шрифты через `next/font`: **Manrope** (дисплей; есть кириллица) + **JetBrains Mono** (метки/цифры).
+  Замена Archivo → Manrope: Archivo не содержит кириллических глифов, а интерфейс на русском.
+- Платформа: **Next.js 16** (App Router, Turbopack), **React 19**.
 - **Vitest** для юнит-тестов движка (разработка движка ведётся test-first / TDD).
 
 ## 3. Архитектура
