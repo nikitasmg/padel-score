@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createMatch, scorePoint } from "@/lib/padel/engine";
+import { createMatch, scorePoint, undo } from "@/lib/padel/engine";
 import type { Config, Team, TeamIndex } from "@/lib/padel/types";
 
 const cfg: Config = { sets: 3, gamesPerSet: 6, goldenPoint: true, tiebreak: true };
@@ -167,5 +167,27 @@ describe("тай-брейк", () => {
   it("без tiebreak — продолжается по геймам (нет инициации тай-брейка)", () => {
     const s = to6to6({ ...cfg, tiebreak: false });
     expect(s.inTiebreak).toBe(false);
+  });
+});
+
+describe("undo", () => {
+  it("откатывает последний разыгранный мяч", () => {
+    let s = createMatch(cfg, teams, 1000);
+    s = scorePoint(s, 0);
+    s = undo(s);
+    expect(s.score[0].points).toBe(0);
+    expect(s.history.length).toBe(0);
+  });
+  it("откатывает через границу гейма", () => {
+    let s = createMatch(cfg, teams, 1000);
+    for (let i = 0; i < 4; i++) s = scorePoint(s, 0); // гейм взят
+    expect(s.score[0].games[0]).toBe(1);
+    s = undo(s); // назад к 40-…
+    expect(s.score[0].games[0]).toBe(0);
+    expect(s.score[0].points).toBe(3);
+  });
+  it("undo без истории — без изменений", () => {
+    const s = createMatch(cfg, teams, 1000);
+    expect(undo(s)).toEqual(s);
   });
 });

@@ -64,6 +64,17 @@ function updateSide(s: MatchState): MatchState["serving"] {
   return { ...s.serving, side: total % 2 === 0 ? "deuce" : "ad" };
 }
 
+export function undo(state: MatchState): MatchState {
+  if (state.history.length === 0) return state;
+  const history = state.history.slice(0, -1);
+  const prev = state.history[state.history.length - 1];
+  return { ...structuredClone(prev), history };
+}
+
+export function resetMatch(state: MatchState): MatchState {
+  return createMatch(state.config, state.teams);
+}
+
 function resolveSetAndMatch(s: MatchState, team: TeamIndex, other: TeamIndex): void {
   const cfg = s.config;
   const g = s.score[team].games[s.currentSet];
