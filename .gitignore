@@ -7,3 +7,5 @@ build/
 .env*.local
 coverage/
 tsconfig.tsbuildinfo
+.playwright-mcp/
+.superpowers/sdd/*.png
