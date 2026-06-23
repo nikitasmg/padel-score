@@ -40,8 +40,9 @@ function advanceServe(s: MatchState): MatchState["serving"] {
 
 export function scorePoint(state: MatchState, team: TeamIndex): MatchState {
   if (state.status === "completed") return state;
-  const s: MatchState = structuredClone(state);
-  s.history = [...state.history, snapshot(state)];
+  // Клонируем только рабочие поля (без history), отдельно собираем новую историю —
+  // иначе structuredClone(state) каждый раз впустую глубоко копирует весь history.
+  const s: MatchState = { ...snapshot(state), history: [...state.history, snapshot(state)] };
 
   const other: TeamIndex = team === 0 ? 1 : 0;
   s.score[team].points += 1;
