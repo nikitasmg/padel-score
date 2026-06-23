@@ -13,6 +13,7 @@ function names(m: MatchState, t: TeamIndex) {
 export default function BroadcastPage() {
   const router = useRouter();
   const match = useMatchStore((s) => s.match);
+  const hasHydrated = useMatchStore((s) => s.hasHydrated);
   const battery = useClickerStore((s) => s.battery);
   const [now, setNow] = useState(Date.now());
 
@@ -22,10 +23,11 @@ export default function BroadcastPage() {
   }, []);
 
   useEffect(() => {
-    if (match === null) router.replace("/");
-  }, [match, router]);
+    // Редиректим только после гидратации store, иначе теряем матч при прямой загрузке/обновлении.
+    if (hasHydrated && match === null) router.replace("/");
+  }, [hasHydrated, match, router]);
 
-  if (!match) return null;
+  if (!hasHydrated || !match) return null;
 
   const gamesA = match.score[0].games[match.currentSet];
   const gamesB = match.score[1].games[match.currentSet];

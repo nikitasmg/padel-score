@@ -16,6 +16,7 @@ export default function MatchPage() {
   const point = useMatchStore((s) => s.point);
   const undoPoint = useMatchStore((s) => s.undoPoint);
   const reset = useMatchStore((s) => s.reset);
+  const hasHydrated = useMatchStore((s) => s.hasHydrated);
   const battery = useClickerStore((s) => s.battery);
   const [now, setNow] = useState(Date.now());
 
@@ -25,10 +26,11 @@ export default function MatchPage() {
   }, []);
 
   useEffect(() => {
-    if (match === null) router.replace("/");
-  }, [match, router]);
+    // Редиректим только после восстановления из localStorage — иначе теряем активный матч при перезагрузке.
+    if (hasHydrated && match === null) router.replace("/");
+  }, [hasHydrated, match, router]);
 
-  if (!match) return null;
+  if (!hasHydrated || !match) return null;
 
   const server = match.teams[match.serving.team].players[match.serving.player].name;
   const sideText = match.serving.side === "deuce" ? "Deuce" : "Ad";
