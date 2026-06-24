@@ -6,9 +6,10 @@ import { Toggle } from "@/components/Toggle";
 import { Input } from "@/components/ui/input";
 import { useMatchStore } from "@/store/matchStore";
 import type { Config } from "@/lib/padel/types";
+import { GamepadLink } from "@/components/GamepadLink";
 
-const A_INIT = ["Алекс", "Марко"];
-const B_INIT = ["Дима", "Соня"];
+const A_INIT = ["", ""];
+const B_INIT = ["", ""];
 
 export default function NewMatchPage() {
   const router = useRouter();
@@ -22,9 +23,10 @@ export default function NewMatchPage() {
 
   function begin() {
     const config: Config = { sets, gamesPerSet: games, goldenPoint, tiebreak };
+    const fill = (v: string, fallback: string) => (v.trim() ? v.trim() : fallback);
     start(config, [
-      { players: [{ name: a[0] }, { name: a[1] }] },
-      { players: [{ name: b[0] }, { name: b[1] }] },
+      { players: [{ name: fill(a[0], "Игрок 1") }, { name: fill(a[1], "Игрок 2") }] },
+      { players: [{ name: fill(b[0], "Игрок 3") }, { name: fill(b[1], "Игрок 4") }] },
     ]);
     router.push("/match");
   }
@@ -38,7 +40,7 @@ export default function NewMatchPage() {
             <div className="font-mono font-medium text-[12px] tracking-[.12em] uppercase text-accent">Setup</div>
             <div className="font-display font-extrabold text-[30px] tracking-[-.02em] text-ink mt-0.5">Новый матч</div>
           </div>
-          <div className="w-[38px] h-[38px] rounded-full border border-white/10 flex items-center justify-center text-[#9a9f97] text-[20px]">✕</div>
+          <GamepadLink />
         </div>
 
         {/* format */}
@@ -88,7 +90,7 @@ function TeamBlock({ color, title, names, onName }: { color: string; title: stri
             <div className="w-10 h-10 rounded-full bg-[#1b1e1b] flex items-center justify-center font-display font-bold text-[16px]" style={{ border: `1.5px solid ${color}`, color }}>
               {n.charAt(0).toUpperCase() || "·"}
             </div>
-            <Input value={n} onChange={(e) => onName(i, e.target.value)} className="flex-1 h-auto p-0 bg-transparent border-0 shadow-none focus-visible:ring-0 font-display font-semibold text-[16px] text-ink2" />
+            <Input value={n} onChange={(e) => onName(i, e.target.value)} placeholder={`Игрок ${i + 1}`} className="flex-1 h-auto p-0 bg-transparent border-0 shadow-none focus-visible:ring-0 font-display font-semibold text-[16px] text-ink2" />
           </div>
         ))}
       </div>
