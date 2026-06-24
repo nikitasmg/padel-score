@@ -40,7 +40,7 @@ export default function MatchPage() {
   const sideText = match.serving.side === "deuce" ? "Deuce" : "Ad";
 
   return (
-    <PhoneScreen hero>
+    <>
       <div className="px-[22px] pt-[26px] min-h-[calc(100vh-36px)] flex flex-col">
         {/* top bar */}
         <div className="flex items-center justify-between mb-[22px]">
@@ -50,7 +50,8 @@ export default function MatchPage() {
             <span className="font-mono font-semibold text-[13px] text-muted2 ml-1.5">СЕТ {match.currentSet + 1}</span>
           </div>
           <span className="font-mono font-semibold text-[14px] text-ink3 tnum">{clock(now - match.startedAt)}</span>
-          <button onClick={() => router.push("/broadcast")} className="font-display text-[22px] text-[#9a9f97]">⋯</button>
+          <button onClick={() => router.push("/broadcast")} className="font-display text-[22px] text-[#9a9f97]">⋯
+          </button>
         </div>
 
         <ScoreBoard match={match} />
@@ -76,9 +77,12 @@ export default function MatchPage() {
 
       <MatchCompleteOverlay
         match={match}
-        onNew={() => { clear(); router.push("/"); }}
+        onNew={() => {
+          clear();
+          router.push("/");
+        }}
         onBroadcast={() => router.push("/broadcast")}
       />
-    </PhoneScreen>
+    </>
   );
 }
