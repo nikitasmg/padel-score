@@ -31,3 +31,13 @@ export function courtPositions(state: MatchState): CourtPos[] {
   }
   return out;
 }
+
+export function serveTarget(server: { x: "left" | "right"; y: "top" | "bottom" }): {
+  x: "left" | "right";
+  y: "top" | "bottom";
+} {
+  return {
+    x: server.x === "left" ? "right" : "left",
+    y: server.y === "top" ? "bottom" : "top",
+  };
+}
