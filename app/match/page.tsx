@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { PhoneScreen } from "@/components/PhoneScreen";
 import { ScoreBoard } from "@/components/ScoreBoard";
 import { CourtDiagram } from "@/components/CourtDiagram";
 import { ScoreButtons } from "@/components/ScoreButtons";

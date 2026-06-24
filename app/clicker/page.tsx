@@ -1,5 +1,4 @@
 "use client";
-import { PhoneScreen } from "@/components/PhoneScreen";
 import { useClickerStore } from "@/store/clickerStore";
 import { useMatchStore } from "@/store/matchStore";
 
@@ -9,7 +8,7 @@ export default function ClickerPage() {
   const holderName = match ? `${match.teams[holder.team].players[holder.player].name} · Команда ${holder.team === 0 ? "A" : "B"}` : "Алекс · Команда A";
 
   return (
-    <PhoneScreen>
+    <div className="w-full">
       <div className="px-[22px] pt-[30px]">
         <div className="flex items-center justify-between mb-[26px]">
           <div>
@@ -82,7 +81,7 @@ export default function ClickerPage() {
           <div className="font-mono font-medium text-[12px] text-accent mt-1.5">последнее: {lastEvent ?? "—"}</div>
         </button>
       </div>
-    </PhoneScreen>
+    </div>
   );
 }
 
