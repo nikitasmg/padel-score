@@ -41,3 +41,15 @@ export function serveTarget(server: { x: "left" | "right"; y: "top" | "bottom" }
     y: server.y === "top" ? "bottom" : "top",
   };
 }
+
+// Квадрат, из которого подаёт команда на стороне deuce/ad. Сторона меняется
+// каждое очко, поэтому подача (и её диагональ) перекидывается между квадратами.
+export function serveOrigin(
+  team: TeamIndex,
+  side: "deuce" | "ad",
+): { x: "left" | "right"; y: "top" | "bottom" } {
+  return {
+    x: team === 0 ? "left" : "right",
+    y: side === "deuce" ? "top" : "bottom",
+  };
+}
