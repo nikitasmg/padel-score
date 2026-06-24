@@ -7,8 +7,8 @@ Base (branch start): 5fb7cd6
 
 ## Журнал
 
-(пока пусто)
+Task 1: complete (commits f3a8608..220ff6d, review clean — spec ✅, quality Approved, 9/9 тестов mapping).
 
 ## Minor-находки
 
-(пока пусто)
+- Task 1 (Minor): buttonToAction(-1, bindings) вернёт действие, если оно отвязано (=-1). Реальные индексы кнопок >=0, поэтому на практике безопасно. Фикс — guard `if (index < 0) return null;`. Решит финальное ревью.
