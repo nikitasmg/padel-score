@@ -2,7 +2,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Config, MatchState, Team, TeamIndex } from "@/lib/padel/types";
-import { createMatch, scorePoint, undo, resetMatch } from "@/lib/padel/engine";
+import { createMatch, scorePoint, undo, resetMatch, finishMatch } from "@/lib/padel/engine";
 
 interface MatchStore {
   match: MatchState | null;
@@ -14,6 +14,7 @@ interface MatchStore {
   undoPoint: () => void;
   reset: () => void;
   clear: () => void;
+  finish: () => void;
 }
 
 export const useMatchStore = create<MatchStore>()(
@@ -25,6 +26,7 @@ export const useMatchStore = create<MatchStore>()(
       start: (config, teams) => set({ match: createMatch(config, teams) }),
       point: (team) => { const m = get().match; if (m) set({ match: scorePoint(m, team) }); },
       undoPoint: () => { const m = get().match; if (m) set({ match: undo(m) }); },
+      finish: () => { const m = get().match; if (m) set({ match: finishMatch(m) }); },
       reset: () => { const m = get().match; if (m) set({ match: resetMatch(m) }); },
       clear: () => set({ match: null }),
     }),
