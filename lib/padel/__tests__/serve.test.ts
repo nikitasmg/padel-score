@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { nextServer, SERVE_ORDER, serveTarget } from "@/lib/padel/serve";
+import { nextServer, SERVE_ORDER, serveOrigin, serveTarget } from "@/lib/padel/serve";
 
 describe("nextServer", () => {
   it("идёт A1 → B1 → A2 → B2 → A1", () => {
@@ -34,5 +34,24 @@ describe("serveTarget — диагональ через сетку", () => {
   });
   it("right-bottom → left-top", () => {
     expect(serveTarget({ x: "right", y: "bottom" })).toEqual({ x: "left", y: "top" });
+  });
+});
+
+describe("serveOrigin — бокс подачи по команде и стороне", () => {
+  it("команда 0: deuce → left-top, ad → left-bottom", () => {
+    expect(serveOrigin(0, "deuce")).toEqual({ x: "left", y: "top" });
+    expect(serveOrigin(0, "ad")).toEqual({ x: "left", y: "bottom" });
+  });
+  it("команда 1: deuce → right-top, ad → right-bottom", () => {
+    expect(serveOrigin(1, "deuce")).toEqual({ x: "right", y: "top" });
+    expect(serveOrigin(1, "ad")).toEqual({ x: "right", y: "bottom" });
+  });
+  it("смена стороны перекидывает цель по диагонали", () => {
+    // одна и та же подающая команда, разные стороны → разные целевые квадраты
+    const deuceTarget = serveTarget(serveOrigin(0, "deuce")); // → right-bottom
+    const adTarget = serveTarget(serveOrigin(0, "ad"));       // → right-top
+    expect(deuceTarget).toEqual({ x: "right", y: "bottom" });
+    expect(adTarget).toEqual({ x: "right", y: "top" });
+    expect(deuceTarget).not.toEqual(adTarget);
   });
 });

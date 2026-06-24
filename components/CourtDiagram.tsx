@@ -1,5 +1,5 @@
 import type { MatchState } from "@/lib/padel/types";
-import { courtPositions, serveTarget } from "@/lib/padel/serve";
+import { courtPositions, serveOrigin, serveTarget } from "@/lib/padel/serve";
 
 const X = { left: 40, right: 306 };
 const Y = { top: 46, bottom: 110 };
@@ -9,41 +9,37 @@ const BOX_Y = { top: [4, 75], bottom: [75, 146] } as const;
 
 export function CourtDiagram({ match }: { match: MatchState }) {
   const positions = courtPositions(match);
-  const server = positions.find((p) => p.isServer);
-  const target = server ? serveTarget(server) : null;
-  const tBox = target
-    ? { x: BOX_X[target.x], y: BOX_Y[target.y] }
-    : null;
+  // Подача идёт от квадрата стороны deuce/ad (меняется каждое очко), а не от
+  // фиксированной позиции игрока — поэтому диагональ перекидывается.
+  const origin = serveOrigin(match.serving.team, match.serving.side);
+  const target = serveTarget(origin);
+  const tBox = { x: BOX_X[target.x], y: BOX_Y[target.y] };
 
   return (
     <svg viewBox="0 0 346 150" className="w-full block">
       <rect x="1" y="1" width="344" height="148" rx="8" fill="#0c0d0c" stroke="rgba(255,255,255,.12)" strokeWidth="1.5" />
-      {tBox && (
-        <rect
-          x={tBox.x[0]}
-          y={tBox.y[0]}
-          width={tBox.x[1] - tBox.x[0]}
-          height={tBox.y[1] - tBox.y[0]}
-          fill="#c6f24e"
-          opacity=".10"
-        />
-      )}
+      <rect
+        x={tBox.x[0]}
+        y={tBox.y[0]}
+        width={tBox.x[1] - tBox.x[0]}
+        height={tBox.y[1] - tBox.y[0]}
+        fill="#c6f24e"
+        opacity=".10"
+      />
       <line x1="173" y1="4" x2="173" y2="146" stroke="#c6f24e" strokeWidth="1.5" strokeDasharray="4 5" opacity=".7" />
       <line x1="64" y1="4" x2="64" y2="146" stroke="rgba(255,255,255,.12)" strokeWidth="1" />
       <line x1="282" y1="4" x2="282" y2="146" stroke="rgba(255,255,255,.12)" strokeWidth="1" />
       <line x1="64" y1="75" x2="282" y2="75" stroke="rgba(255,255,255,.12)" strokeWidth="1" />
-      {server && target && (
-        <line
-          x1={X[server.x]}
-          y1={Y[server.y]}
-          x2={X[target.x]}
-          y2={Y[target.y]}
-          stroke="#c6f24e"
-          strokeWidth="1.5"
-          strokeDasharray="2 4"
-          opacity=".75"
-        />
-      )}
+      <line
+        x1={X[origin.x]}
+        y1={Y[origin.y]}
+        x2={X[target.x]}
+        y2={Y[target.y]}
+        stroke="#c6f24e"
+        strokeWidth="1.5"
+        strokeDasharray="2 4"
+        opacity=".75"
+      />
       {positions.map((p) => {
         const cx = X[p.x]; const cy = Y[p.y];
         const teamColor = p.team === 0 ? "#c6f24e" : "#cfd3cb";
