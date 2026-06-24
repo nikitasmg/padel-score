@@ -5,6 +5,9 @@ import { useMatchStore } from "@/store/matchStore";
 import { useClickerStore } from "@/store/clickerStore";
 import { clock, pointLabel } from "@/lib/padel/format";
 import type { MatchState, TeamIndex } from "@/lib/padel/types";
+import { AnimatedPoint } from "@/components/AnimatedPoint";
+import { WinCelebration } from "@/components/WinCelebration";
+import { ServeMiniCourt } from "@/components/ServeMiniCourt";
 
 function names(m: MatchState, t: TeamIndex) {
   return m.teams[t].players.map((p) => p.name).join(" / ");
@@ -45,6 +48,7 @@ export default function BroadcastPage() {
           "radial-gradient(80% 130% at 50% 120%,rgba(36,92,48,.32),transparent 60%),radial-gradient(60% 90% at 50% -20%,rgba(198,242,78,.10),transparent 60%),#070807",
       }}
     >
+      <WinCelebration match={match} variant="broadcast" />
       {/* top strip */}
       <div className="flex items-center justify-between px-10 pt-5">
         <div className="flex items-center gap-2.5">
@@ -103,11 +107,14 @@ export default function BroadcastPage() {
         <div className="font-mono font-semibold text-[12px] tracking-[.16em] uppercase text-muted3">
           Нажмите на экран, чтобы выйти из трансляции
         </div>
-        <div className="flex items-center gap-2">
-          <div className={`w-[7px] h-[7px] rounded-full ${connected ? "bg-accent animate-pulse2" : "bg-muted3"}`} />
-          <span className={`font-mono font-semibold text-[12px] ${connected ? "text-accent" : "text-muted3"}`}>
-            {connected ? "Геймпад" : "Нет геймпада"}
-          </span>
+        <div className="flex items-center gap-4">
+          <ServeMiniCourt match={match} />
+          <div className="flex items-center gap-2">
+            <div className={`w-[7px] h-[7px] rounded-full ${connected ? "bg-accent animate-pulse2" : "bg-muted3"}`} />
+            <span className={`font-mono font-semibold text-[12px] ${connected ? "text-accent" : "text-muted3"}`}>
+              {connected ? "Геймпад" : "Нет геймпада"}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -153,15 +160,14 @@ function TeamSide({
       </div>
       <div className={`flex items-end gap-6 mt-3.5 ${right ? "justify-end" : ""}`}>
         {right && <Stats sets={sets} games={games} align="right" />}
-        <div
-          className="font-display font-black text-[132px] leading-[.82] tnum tracking-[-.04em]"
+        <AnimatedPoint
+          value={point}
+          className="font-display font-black leading-[.82] tracking-[-.04em] text-[clamp(120px,17vw,176px)]"
           style={{
             color: highlight ? "#c6f24e" : "#eef0ea",
-            textShadow: highlight ? "0 0 50px rgba(198,242,78,.35)" : undefined,
+            textShadow: highlight ? "0 0 60px rgba(198,242,78,.4)" : undefined,
           }}
-        >
-          {point}
-        </div>
+        />
         {!right && <Stats sets={sets} games={games} align="left" />}
       </div>
       <div className="h-[34px] mt-[18px]">
