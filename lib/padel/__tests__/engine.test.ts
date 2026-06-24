@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createMatch, scorePoint, undo } from "@/lib/padel/engine";
+import { createMatch, scorePoint, undo, finishMatch } from "@/lib/padel/engine";
 import type { Config, Team, TeamIndex } from "@/lib/padel/types";
 
 const cfg: Config = { sets: 3, gamesPerSet: 6, goldenPoint: true, tiebreak: true };
@@ -202,5 +202,40 @@ describe("undo", () => {
   it("undo без истории — без изменений", () => {
     const s = createMatch(cfg, teams, 1000);
     expect(undo(s)).toEqual(s);
+  });
+});
+
+describe("finishMatch — ручное завершение", () => {
+  it("победитель по большему числу сетов", () => {
+    let s = m();
+    s.score[0].sets = 1;
+    const r = finishMatch(s);
+    expect(r.status).toBe("completed");
+    expect(r.winner).toBe(0);
+  });
+
+  it("при равных сетах — по геймам текущего сета", () => {
+    let s = m();
+    s.score[0].games[0] = 3;
+    s.score[1].games[0] = 1;
+    expect(finishMatch(s).winner).toBe(0);
+  });
+
+  it("при равных сетах и геймах — по очкам", () => {
+    let s = m();
+    s.score[1].points = 2;
+    expect(finishMatch(s).winner).toBe(1);
+  });
+
+  it("полное равенство — ничья (winner undefined)", () => {
+    const r = finishMatch(m());
+    expect(r.status).toBe("completed");
+    expect(r.winner).toBeUndefined();
+  });
+
+  it("завершение можно отменить через undo", () => {
+    const s = m();
+    const r = finishMatch(s);
+    expect(undo(r).status).toBe("in_progress");
   });
 });
