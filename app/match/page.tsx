@@ -42,7 +42,7 @@ export default function MatchPage() {
 
   return (
     <>
-      <div className="px-[22px] pt-[26px] min-h-[calc(100vh-36px)] flex flex-col">
+      <div className="px-[22px] pt-[26px] min-h-screen flex flex-col">
         {/* top bar */}
         <div className="flex items-center justify-between mb-[22px]">
           <div className="flex items-center gap-[9px]">
@@ -52,7 +52,7 @@ export default function MatchPage() {
           </div>
           <span className="font-mono font-semibold text-[14px] text-ink3 tnum">{clock(now - match.startedAt)}</span>
           <button onClick={() => router.push("/broadcast")} className="flex items-center gap-1.5 bg-accent/[.12] border border-accent/30 rounded-full px-3 py-1.5 font-mono font-semibold text-[12px] tracking-[.08em] uppercase text-accent">
-            <span className="w-[7px] h-[7px] rounded-full bg-accent animate-pulse2" /> Трансляция
+            <div className="w-[7px] h-[7px] rounded-full bg-accent animate-pulse2" /> Трансляция
           </button>
         </div>
 
