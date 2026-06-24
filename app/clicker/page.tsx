@@ -1,19 +1,36 @@
 "use client";
+import { useRouter } from "next/navigation";
+import { ChevronLeft } from "lucide-react";
 import { useClickerStore } from "@/store/clickerStore";
 import { useMatchStore } from "@/store/matchStore";
+import { buttonLabel, EVENT_LABEL, type ClickerAction } from "@/lib/gamepad/mapping";
 
 export default function ClickerPage() {
-  const { holder, connected, gamepadId, lastEvent, setHolder } = useClickerStore();
+  const router = useRouter();
+  const { holder, connected, gamepadId, lastEvent, setHolder, bindings, learning, setLearning } =
+    useClickerStore();
   const match = useMatchStore((s) => s.match);
   const holderName = match ? `${match.teams[holder.team].players[holder.player].name} · Команда ${holder.team === 0 ? "A" : "B"}` : "Команда A";
+
+  const toggleLearn = (action: ClickerAction) =>
+    setLearning(learning === action ? null : action);
 
   return (
     <div className="w-full">
       <div className="px-[22px] pt-[30px]">
         <div className="flex items-center justify-between mb-[26px]">
-          <div>
-            <div className="font-mono font-medium text-[12px] tracking-[.12em] uppercase text-accent">Геймпад</div>
-            <div className="font-display font-extrabold text-[30px] tracking-[-.02em] text-ink mt-0.5">Кликер</div>
+          <div className="flex items-center gap-3">
+            <button
+              aria-label="Назад"
+              onClick={() => router.back()}
+              className="w-[38px] h-[38px] rounded-full border border-white/10 flex items-center justify-center text-[#9a9f97] active:scale-95 transition-transform"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <div>
+              <div className="font-mono font-medium text-[12px] tracking-[.12em] uppercase text-accent">Геймпад</div>
+              <div className="font-display font-extrabold text-[30px] tracking-[-.02em] text-ink mt-0.5">Кликер</div>
+            </div>
           </div>
           <div className="w-[38px] h-[38px] rounded-full bg-accent/[.12] flex items-center justify-center text-accent font-bold text-[17px]">✶</div>
         </div>
@@ -44,9 +61,19 @@ export default function ClickerPage() {
         {/* button mode */}
         <div className="font-mono font-semibold text-[11px] tracking-[.14em] uppercase text-muted2 mb-3">Назначение кнопок</div>
         <div className="flex flex-col gap-2.5 mb-[22px]">
-          <ModeRow active title="L1 — очко команде A" subtitle="Верхняя левая кнопка" onClick={() => {}} />
-          <ModeRow active title="R1 — очко команде B" subtitle="Верхняя правая кнопка" onClick={() => {}} />
-          <ModeRow active title="✕ — отменить последнее" subtitle="Нижняя кнопка" onClick={() => {}} />
+          {(["pointA", "pointB", "undo"] as ClickerAction[]).map((action) => {
+            const isLearning = learning === action;
+            const idx = bindings[action];
+            return (
+              <ModeRow
+                key={action}
+                active={isLearning}
+                title={`${buttonLabel(idx)} — ${EVENT_LABEL[action]}`}
+                subtitle={isLearning ? "Нажмите кнопку на геймпаде…" : "Нажмите, чтобы переназначить"}
+                onClick={() => toggleLearn(action)}
+              />
+            );
+          })}
         </div>
 
         {/* holder */}
