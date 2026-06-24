@@ -8,6 +8,8 @@ import { MatchCompleteOverlay } from "@/components/MatchCompleteOverlay";
 import { useMatchStore } from "@/store/matchStore";
 import { useClickerStore } from "@/store/clickerStore";
 import { clock, sideLabel } from "@/lib/padel/format";
+import { WinCelebration } from "@/components/WinCelebration";
+import { GamepadLink } from "@/components/GamepadLink";
 
 export default function MatchPage() {
   const router = useRouter();
@@ -42,7 +44,8 @@ export default function MatchPage() {
 
   return (
     <>
-      <div className="px-[22px] pt-[26px] min-h-screen flex flex-col">
+      <div className="relative px-[22px] pt-[26px] min-h-screen flex flex-col">
+        <WinCelebration match={match} variant="match" />
         {/* top bar */}
         <div className="flex items-center justify-between mb-[22px]">
           <div className="flex items-center gap-[9px]">
@@ -51,9 +54,12 @@ export default function MatchPage() {
             <span className="font-mono font-semibold text-[13px] text-muted2 ml-1.5">СЕТ {match.currentSet + 1}</span>
           </div>
           <span className="font-mono font-semibold text-[14px] text-ink3 tnum">{clock(now - match.startedAt)}</span>
-          <button onClick={() => router.push("/broadcast")} className="flex items-center gap-1.5 bg-accent/[.12] border border-accent/30 rounded-full px-3 py-1.5 font-mono font-semibold text-[12px] tracking-[.08em] uppercase text-accent">
-            <div className="w-[7px] h-[7px] rounded-full bg-accent animate-pulse2" /> Трансляция
-          </button>
+          <div className="flex items-center gap-2">
+            <GamepadLink />
+            <button onClick={() => router.push("/broadcast")} className="flex items-center gap-1.5 bg-accent/[.12] border border-accent/30 rounded-full px-3 py-1.5 font-mono font-semibold text-[12px] tracking-[.08em] uppercase text-accent">
+              <div className="w-[7px] h-[7px] rounded-full bg-accent animate-pulse2" /> Трансляция
+            </button>
+          </div>
         </div>
 
         <ScoreBoard match={match} />
