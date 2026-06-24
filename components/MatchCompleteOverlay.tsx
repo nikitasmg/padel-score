@@ -2,8 +2,9 @@
 import type { MatchState } from "@/lib/padel/types";
 
 export function MatchCompleteOverlay({ match, onNew, onBroadcast }: { match: MatchState; onNew: () => void; onBroadcast: () => void }) {
-  if (match.status !== "completed" || match.winner === undefined) return null;
-  const w = match.teams[match.winner].players.map((p) => p.name).join(" / ");
+  if (match.status !== "completed") return null;
+  const draw = match.winner === undefined;
+  const w = draw ? "Ничья" : match.teams[match.winner!].players.map((p) => p.name).join(" / ");
   return (
     <div className="absolute inset-0 z-20 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center px-8 text-center">
       <div className="font-mono font-semibold text-[12px] tracking-[.16em] uppercase text-accent mb-3">Матч завершён</div>

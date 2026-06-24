@@ -14,7 +14,7 @@ export default function BroadcastPage() {
   const router = useRouter();
   const match = useMatchStore((s) => s.match);
   const hasHydrated = useMatchStore((s) => s.hasHydrated);
-  const battery = useClickerStore((s) => s.battery);
+  const connected = useClickerStore((s) => s.connected);
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
@@ -104,9 +104,9 @@ export default function BroadcastPage() {
           Нажмите на экран, чтобы выйти из трансляции
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-[7px] h-[7px] rounded-full bg-accent animate-pulse2" />
-          <span className="font-mono font-semibold text-[12px] text-accent">
-            Кликер · {battery}%
+          <div className={`w-[7px] h-[7px] rounded-full ${connected ? "bg-accent animate-pulse2" : "bg-muted3"}`} />
+          <span className={`font-mono font-semibold text-[12px] ${connected ? "text-accent" : "text-muted3"}`}>
+            {connected ? "Геймпад" : "Нет геймпада"}
           </span>
         </div>
       </div>

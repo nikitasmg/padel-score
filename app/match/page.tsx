@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { PhoneScreen } from "@/components/PhoneScreen";
 import { ScoreBoard } from "@/components/ScoreBoard";
 import { CourtDiagram } from "@/components/CourtDiagram";
 import { ScoreButtons } from "@/components/ScoreButtons";
@@ -15,10 +14,12 @@ export default function MatchPage() {
   const match = useMatchStore((s) => s.match);
   const point = useMatchStore((s) => s.point);
   const undoPoint = useMatchStore((s) => s.undoPoint);
+  const finish = useMatchStore((s) => s.finish);
   const clear = useMatchStore((s) => s.clear);
   const hasHydrated = useMatchStore((s) => s.hasHydrated);
-  const battery = useClickerStore((s) => s.battery);
+  const connected = useClickerStore((s) => s.connected);
   const [now, setNow] = useState(Date.now());
+  const [confirmFinish, setConfirmFinish] = useState(false);
 
   useEffect(() => {
     void useMatchStore.persist.rehydrate();
@@ -41,7 +42,7 @@ export default function MatchPage() {
 
   return (
     <>
-      <div className="px-[22px] pt-[26px] min-h-[calc(100vh-36px)] flex flex-col">
+      <div className="px-[22px] pt-[26px] min-h-screen flex flex-col">
         {/* top bar */}
         <div className="flex items-center justify-between mb-[22px]">
           <div className="flex items-center gap-[9px]">
@@ -50,7 +51,8 @@ export default function MatchPage() {
             <span className="font-mono font-semibold text-[13px] text-muted2 ml-1.5">СЕТ {match.currentSet + 1}</span>
           </div>
           <span className="font-mono font-semibold text-[14px] text-ink3 tnum">{clock(now - match.startedAt)}</span>
-          <button onClick={() => router.push("/broadcast")} className="font-display text-[22px] text-[#9a9f97]">⋯
+          <button onClick={() => router.push("/broadcast")} className="flex items-center gap-1.5 bg-accent/[.12] border border-accent/30 rounded-full px-3 py-1.5 font-mono font-semibold text-[12px] tracking-[.08em] uppercase text-accent">
+            <div className="w-[7px] h-[7px] rounded-full bg-accent animate-pulse2" /> Трансляция
           </button>
         </div>
 
@@ -71,8 +73,17 @@ export default function MatchPage() {
           onA={() => point(0)}
           onB={() => point(1)}
           onUndo={undoPoint}
-          battery={battery}
+          connected={connected}
         />
+
+        {confirmFinish ? (
+          <div className="flex gap-2 pb-4">
+            <button onClick={() => { finish(); setConfirmFinish(false); }} className="flex-1 h-[46px] rounded-[14px] bg-live/90 font-display font-bold text-[14px] text-bg">Завершить сейчас</button>
+            <button onClick={() => setConfirmFinish(false)} className="flex-1 h-[46px] rounded-[14px] border border-white/15 font-display font-semibold text-[14px] text-ink">Отмена</button>
+          </div>
+        ) : (
+          <button onClick={() => setConfirmFinish(true)} className="w-full h-[46px] rounded-[14px] border border-white/12 font-display font-semibold text-[14px] text-muted2 pb-0 mb-4">Завершить матч</button>
+        )}
       </div>
 
       <MatchCompleteOverlay

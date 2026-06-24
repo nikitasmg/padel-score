@@ -84,6 +84,25 @@ export function resetMatch(state: MatchState): MatchState {
   return createMatch(state.config, state.teams);
 }
 
+export function finishMatch(state: MatchState): MatchState {
+  if (state.status === "completed") return state;
+  const s: MatchState = { ...snapshot(state), history: [...state.history, snapshot(state)] };
+  const [a, b] = s.score;
+  let winner: TeamIndex | undefined;
+  if (a.sets !== b.sets) {
+    winner = a.sets > b.sets ? 0 : 1;
+  } else {
+    const ga = a.games[s.currentSet] ?? 0;
+    const gb = b.games[s.currentSet] ?? 0;
+    if (ga !== gb) winner = ga > gb ? 0 : 1;
+    else if (a.points !== b.points) winner = a.points > b.points ? 0 : 1;
+    else winner = undefined;
+  }
+  s.status = "completed";
+  s.winner = winner;
+  return s;
+}
+
 function resolveSetAndMatch(s: MatchState, team: TeamIndex, other: TeamIndex): void {
   const cfg = s.config;
   const g = s.score[team].games[s.currentSet];

@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { PhoneScreen } from "@/components/PhoneScreen";
 import { SegmentedControl } from "@/components/SegmentedControl";
 import { Toggle } from "@/components/Toggle";
 import { Input } from "@/components/ui/input";
@@ -31,8 +30,8 @@ export default function NewMatchPage() {
   }
 
   return (
-    <PhoneScreen>
-      <div className="px-[22px] pt-[30px] min-h-[calc(100vh-36px)] flex flex-col">
+    <div className="w-full">
+      <div className="px-[22px] pt-[30px] min-h-screen flex flex-col">
         {/* title */}
         <div className="flex items-center justify-between mb-[26px]">
           <div>
@@ -72,7 +71,7 @@ export default function NewMatchPage() {
           <div className="text-center mt-3 font-display font-medium text-[13px] text-muted3">Корт 3 · Padel Club Moscow</div>
         </div>
       </div>
-    </PhoneScreen>
+    </div>
   );
 }
 
