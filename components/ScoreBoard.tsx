@@ -1,5 +1,6 @@
 import type { MatchState, TeamIndex } from "@/lib/padel/types";
 import { pointLabel } from "@/lib/padel/format";
+import { AnimatedPoint } from "@/components/AnimatedPoint";
 
 export function ScoreBoard({ match }: { match: MatchState }) {
   const setsCount = match.score[0].games.length;
@@ -31,7 +32,9 @@ export function ScoreBoard({ match }: { match: MatchState }) {
             {match.score[team].games.map((g, i) => (
               <span key={i} className="text-center font-display font-bold text-[17px] tnum text-muted">{g}</span>
             ))}
-            <span className={`text-center font-display font-extrabold text-[30px] tnum ${serving ? "text-accent" : "text-ink3"}`}>{pointLabel(match, team)}</span>
+            <span className={`text-center font-display font-extrabold text-[30px] ${serving ? "text-accent" : "text-ink3"}`}>
+              <AnimatedPoint value={pointLabel(match, team)} />
+            </span>
           </div>
         );
       })}

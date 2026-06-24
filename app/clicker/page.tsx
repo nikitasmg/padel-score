@@ -5,7 +5,7 @@ import { useMatchStore } from "@/store/matchStore";
 export default function ClickerPage() {
   const { holder, connected, gamepadId, lastEvent, setHolder } = useClickerStore();
   const match = useMatchStore((s) => s.match);
-  const holderName = match ? `${match.teams[holder.team].players[holder.player].name} · Команда ${holder.team === 0 ? "A" : "B"}` : "Алекс · Команда A";
+  const holderName = match ? `${match.teams[holder.team].players[holder.player].name} · Команда ${holder.team === 0 ? "A" : "B"}` : "Команда A";
 
   return (
     <div className="w-full">
