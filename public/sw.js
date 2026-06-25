@@ -1,5 +1,5 @@
 /* RALLY service worker — оффлайн-кэш. У приложения нет API, всё работает на клиенте. */
-const CACHE = "rally-v1";
+const CACHE = "rally-v2";
 
 // Маршруты-страницы, которые предзагружаем при установке, чтобы приложение
 // открывалось без сети сразу после первой онлайн-загрузки.
@@ -47,20 +47,25 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  // Переходы по страницам: сначала сеть (чтобы видеть свежую версию),
-  // при офлайне — кэш, иначе — главная как запасной экран.
+  // Переходы по страницам: stale-while-revalidate.
+  // Отдаём кэш мгновенно (важно для офлайна — не ждём таймаут сети),
+  // а в фоне обновляем кэш из сети, чтобы следующий запуск был свежим.
   if (req.mode === "navigate") {
     event.respondWith(
       (async () => {
-        try {
-          const res = await fetch(req);
-          const cache = await caches.open(CACHE);
-          cache.put(req, res.clone());
-          return res;
-        } catch {
-          const cache = await caches.open(CACHE);
-          return (await cache.match(req)) || (await cache.match("/")) || Response.error();
+        const cache = await caches.open(CACHE);
+        const cached = (await cache.match(req)) || (await cache.match("/"));
+        const fromNetwork = fetch(req)
+          .then((res) => {
+            cache.put(req, res.clone());
+            return res;
+          })
+          .catch(() => null);
+        if (cached) {
+          event.waitUntil(fromNetwork); // обновление кэша в фоне
+          return cached;
         }
+        return (await fromNetwork) || Response.error();
       })(),
     );
     return;
