@@ -15,6 +15,13 @@ Task 3: complete (commits e05294f..dce8836, review clean — spec ✅, quality A
 Task 4: complete (commits 9020ab8..f05911f, review clean — spec ✅, quality Approved). build ок.
   ⚠️ ModeRow active рендерит border-accent/30 + залитую точку (исходный компонент) — видимое отличие есть.
 
+## Финальное ревью (opus, по 5fb7cd6..158add7)
+
+Вердикт: READY TO MERGE. Critical/Important — нет. Реализация точно по плану:
+настраиваемые bindings, снятие кнопки со старого действия (-1), persist bindings / runtime learning,
+learn-mode роутинг, кнопка назад. 74/74 тестов, build/tsc ок. lint сломан предсуществующе.
+Применены две полировки по рекомендации: buttonLabel(-1)→«не назначено», guard `index<0` в buttonToAction (+2 теста).
+
 ## Minor-находки
 
 - Task 1 (Minor): buttonToAction(-1, bindings) вернёт действие, если оно отвязано (=-1). Реальные индексы кнопок >=0, поэтому на практике безопасно. Фикс — guard `if (index < 0) return null;`. Решит финальное ревью.
