@@ -12,6 +12,8 @@ Task 2: complete (commits 4196cd3..920219e, review clean — spec ✅, quality A
   ⚠️ resolveBindings закрыт Task 1. setBinding сбрасывает learning:null — намеренно (по плану Task 3).
 Task 3: complete (commits e05294f..dce8836, review clean — spec ✅, quality Approved). build (tsc) ок, без юнит-теста (интеграция).
   ⚠️ подпись Claude в коммитах — проверено по 5fb7cd6..HEAD: подписей нет. npm run lint сломан предсуществующе (next lint).
+Task 4: complete (commits 9020ab8..f05911f, review clean — spec ✅, quality Approved). build ок.
+  ⚠️ ModeRow active рендерит border-accent/30 + залитую точку (исходный компонент) — видимое отличие есть.
 
 ## Minor-находки
 
