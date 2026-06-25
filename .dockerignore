@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+.idea
+.claude
+.superpowers
+.playwright-mcp
+docs
+coverage
+npm-debug.log*
+*.log
+.DS_Store
+.env*.local
+tsconfig.tsbuildinfo
+Dockerfile
+.dockerignore
+README.md
