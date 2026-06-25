@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Manrope, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { GamepadController } from "@/components/GamepadController";
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 
 const manrope = Manrope({ subsets: ["latin", "cyrillic"], weight: ["400","500","600","700","800"], variable: "--font-manrope" });
 const mono = JetBrains_Mono({ subsets: ["latin", "cyrillic"], weight: ["400","500","600","700"], variable: "--font-jetbrains" });
@@ -13,6 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru" className={`${manrope.variable} ${mono.variable}`}>
       <body className="bg-bg text-ink font-display antialiased">
+        <ServiceWorkerRegister />
         <GamepadController />
         {children}
       </body>
