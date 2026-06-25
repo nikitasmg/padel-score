@@ -69,24 +69,10 @@ export default function BroadcastPage() {
         </span>
       </div>
 
-      {/* minimal top: set + game */}
-      <div className="flex items-center justify-center gap-[18px] pt-[22px]">
-        <span className="font-display font-extrabold text-[19px] tracking-[.04em] text-[#6a6f67]">
-          СЕТ {match.currentSet + 1}
-        </span>
-        <span className="w-[5px] h-[5px] rounded-full bg-[#3a3f38]" />
-        <span className="font-display font-extrabold text-[19px] tracking-[.02em] text-[#6a6f67]">
-          ГЕЙМ {gamesA + gamesB + 1}
-        </span>
-      </div>
-
-      {/* main split */}
-      <div
-        className="grid items-center"
-        style={{ gridTemplateColumns: "1fr 2px 1fr", height: "calc(100vh - 96px)" }}
-      >
-        <TeamSide
-          align="left"
+      {/* main split — гигантский счёт во весь экран */}
+      <div className="grid h-screen" style={{ gridTemplateColumns: "1fr 2px 1fr" }}>
+        <TeamColumn
+          side="left"
           name={names(match, 0)}
           point={pointLabel(match, 0)}
           sets={match.score[0].sets}
@@ -95,14 +81,14 @@ export default function BroadcastPage() {
           highlight={match.serving.team === 0}
         />
         <div
-          className="w-0.5 h-[64%] justify-self-center"
+          className="w-0.5 h-[300px] self-center justify-self-center"
           style={{
             background:
               "linear-gradient(180deg,transparent,rgba(255,255,255,.14),transparent)",
           }}
         />
-        <TeamSide
-          align="right"
+        <TeamColumn
+          side="right"
           name={names(match, 1)}
           point={pointLabel(match, 1)}
           sets={match.score[1].sets}
@@ -115,12 +101,12 @@ export default function BroadcastPage() {
   );
 }
 
-function ServeBall() {
+function ServeBall({ size = 30 }: { size?: number }) {
   return (
     <svg
       viewBox="0 0 28 28"
-      className="w-[30px] h-[30px] shrink-0"
-      style={{ filter: "drop-shadow(0 0 10px rgba(198,242,78,.7))" }}
+      className="shrink-0"
+      style={{ width: size, height: size, filter: "drop-shadow(0 0 10px rgba(198,242,78,.7))" }}
     >
       <circle cx="14" cy="14" r="13" fill="#c6f24e" />
       <path
@@ -134,22 +120,8 @@ function ServeBall() {
   );
 }
 
-function StatChip({ label, val, align }: { label: string; val: number; align: "left" | "right" }) {
-  return (
-    <div className="flex items-baseline gap-[10px] bg-white/[.04] border border-white/[.08] rounded-[14px] px-4 py-2">
-      {align === "right" && (
-        <span className="font-display font-bold text-[14px] tracking-[.08em] text-[#6a6f67]">{label}</span>
-      )}
-      <span className="font-display font-extrabold text-[40px] text-ink tnum leading-none">{val}</span>
-      {align === "left" && (
-        <span className="font-display font-bold text-[14px] tracking-[.08em] text-[#6a6f67]">{label}</span>
-      )}
-    </div>
-  );
-}
-
-function TeamSide({
-  align,
+function TeamColumn({
+  side,
   name,
   point,
   sets,
@@ -157,7 +129,7 @@ function TeamSide({
   serving,
   highlight,
 }: {
-  align: "left" | "right";
+  side: "left" | "right";
   name: string;
   point: string;
   sets: number;
@@ -165,40 +137,38 @@ function TeamSide({
   serving: boolean;
   highlight?: boolean;
 }) {
-  const right = align === "right";
   return (
-    <div className={right ? "pl-8 pr-14 text-right" : "pl-14 pr-8"}>
-      <div className={`flex items-center gap-[14px] mb-0.5 ${right ? "justify-end" : ""}`}>
-        {serving && !right && <ServeBall />}
+    <div
+      className="flex flex-col items-center h-full"
+      style={{ padding: side === "left" ? "18px 8px 22px 48px" : "18px 48px 22px 8px" }}
+    >
+      <div className="flex items-center gap-[11px]">
+        {serving && <ServeBall size={26} />}
         <span
-          className="font-display font-extrabold text-[34px] tracking-[-.02em]"
+          className="font-display font-extrabold text-[27px] tracking-[-.02em] whitespace-nowrap"
           style={{ color: highlight ? "#f4f5f1" : "#aeb2aa" }}
         >
           {name}
         </span>
-        {serving && right && <ServeBall />}
-        {!serving && right && <span className="w-[30px] shrink-0" />}
       </div>
-      <AnimatedPoint
-        value={point}
-        className="font-display font-black leading-[.8] tracking-[-.05em] text-[clamp(120px,17vw,176px)]"
-        style={{
-          color: highlight ? "#c6f24e" : "#eef0ea",
-          textShadow: highlight ? "0 0 70px rgba(198,242,78,.45)" : undefined,
-        }}
-      />
-      <div className={`flex gap-[14px] mt-[14px] ${right ? "justify-end" : ""}`}>
-        {right ? (
-          <>
-            <StatChip label="СЕТЫ" val={sets} align="right" />
-            <StatChip label="ГЕЙМЫ" val={games} align="right" />
-          </>
-        ) : (
-          <>
-            <StatChip label="СЕТЫ" val={sets} align="left" />
-            <StatChip label="ГЕЙМЫ" val={games} align="left" />
-          </>
-        )}
+
+      <div className="mt-auto flex justify-center">
+        <AnimatedPoint
+          value={point}
+          className="font-display font-black leading-[.7] tracking-[-.06em] text-[clamp(140px,72vh,300px)]"
+          style={{
+            color: highlight ? "#c6f24e" : "#eef0ea",
+            textShadow: highlight ? "0 0 80px rgba(198,242,78,.5)" : undefined,
+          }}
+        />
+      </div>
+
+      <div className="flex items-center gap-[7px] mt-[14px] font-display font-extrabold text-[30px] tnum">
+        <span style={{ color: "#f4f5f1" }}>{sets}</span>
+        <span className="font-display font-bold text-[12px] tracking-[.06em] text-[#6a6f67]">СЕТЫ</span>
+        <span className="w-1 h-1 rounded-full bg-[#3a3f38] mx-1" />
+        <span style={{ color: "#f4f5f1" }}>{games}</span>
+        <span className="font-display font-bold text-[12px] tracking-[.06em] text-[#6a6f67]">ГЕЙМЫ</span>
       </div>
     </div>
   );
