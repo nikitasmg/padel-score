@@ -18,6 +18,9 @@ describe("buttonToAction", () => {
   it("учитывает кастомную привязку", () => {
     expect(buttonToAction(7, { pointA: 7, pointB: 5, undo: 0 })).toBe("pointA");
   });
+  it("отвязанное действие (-1) не матчится", () => {
+    expect(buttonToAction(-1, { pointA: -1, pointB: 5, undo: 0 })).toBeNull();
+  });
 });
 
 describe("buttonLabel", () => {
@@ -28,6 +31,9 @@ describe("buttonLabel", () => {
   });
   it("прочие — «Кнопка N»", () => {
     expect(buttonLabel(9)).toBe("Кнопка 9");
+  });
+  it("отвязано (-1) — «не назначено»", () => {
+    expect(buttonLabel(-1)).toBe("не назначено");
   });
 });
 

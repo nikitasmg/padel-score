@@ -14,6 +14,7 @@ export function buttonToAction(
   index: number,
   bindings: ClickerBindings,
 ): ClickerAction | null {
+  if (index < 0) return null; // -1 — «не назначено», не должно матчиться
   return ACTIONS.find((a) => bindings[a] === index) ?? null;
 }
 
@@ -22,7 +23,7 @@ export function buttonLabel(index: number): string {
     case 0: return "✕ / A";
     case 4: return "L1";
     case 5: return "R1";
-    default: return `Кнопка ${index}`;
+    default: return index < 0 ? "не назначено" : `Кнопка ${index}`;
   }
 }
 
