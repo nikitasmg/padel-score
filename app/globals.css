@@ -18,7 +18,7 @@ body {
   background:
     radial-gradient(130% 70% at 50% -5%, rgba(198, 242, 78, 0.1), transparent 55%),
     #0a0b0a;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 * { box-sizing: border-box; }
 .tnum { font-variant-numeric: tabular-nums; }

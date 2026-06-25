@@ -48,7 +48,7 @@ export default function BroadcastPage() {
   return (
     <div
       onClick={() => router.push("/match")}
-      className="relative min-h-screen w-full overflow-hidden text-ink cursor-pointer"
+      className="relative min-h-dvh w-full overflow-hidden text-ink cursor-pointer"
       style={{
         background:
           "radial-gradient(80% 130% at 50% 130%,rgba(36,92,48,.34),transparent 62%),radial-gradient(60% 90% at 50% -25%,rgba(198,242,78,.10),transparent 60%),#070807",
@@ -70,7 +70,7 @@ export default function BroadcastPage() {
       </div>
 
       {/* main split — гигантский счёт во весь экран */}
-      <div className="grid h-screen" style={{ gridTemplateColumns: "1fr 2px 1fr" }}>
+      <div className="grid h-dvh" style={{ gridTemplateColumns: "1fr 2px 1fr" }}>
         <TeamColumn
           side="left"
           name={names(match, 0)}
@@ -178,7 +178,7 @@ function RotatePrompt({ match, onExit }: { match: MatchState; onExit: () => void
   const serveTeam = match.serving.team;
   return (
     <div
-      className="relative min-h-screen w-full overflow-hidden flex flex-col text-ink"
+      className="relative min-h-dvh w-full overflow-hidden flex flex-col text-ink"
       style={{
         background:
           "radial-gradient(120% 50% at 50% 50%,rgba(198,242,78,.08),transparent 60%),#070807",

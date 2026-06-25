@@ -33,7 +33,7 @@ export default function NewMatchPage() {
 
   return (
     <div className="w-full">
-      <div className="px-[22px] pt-[30px] min-h-screen flex flex-col">
+      <div className="px-[22px] pt-[max(env(safe-area-inset-top),14px)] min-h-dvh flex flex-col">
         {/* title */}
         <div className="flex items-center justify-between mb-[26px]">
           <div>

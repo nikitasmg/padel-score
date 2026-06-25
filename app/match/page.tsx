@@ -44,7 +44,7 @@ export default function MatchPage() {
 
   return (
     <>
-      <div className="relative px-[22px] pt-[26px] min-h-screen flex flex-col">
+      <div className="relative px-[22px] pt-[max(env(safe-area-inset-top),14px)] min-h-dvh flex flex-col">
         <WinCelebration match={match} variant="match" />
         {/* top bar */}
         <div className="flex items-center justify-between mb-[22px]">

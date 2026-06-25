@@ -17,7 +17,7 @@ export default function ClickerPage() {
 
   return (
     <div className="w-full">
-      <div className="px-[22px] pt-[30px]">
+      <div className="px-[22px] pt-[max(env(safe-area-inset-top),14px)]">
         <div className="flex items-center justify-between mb-[26px]">
           <div className="flex items-center gap-3">
             <button
