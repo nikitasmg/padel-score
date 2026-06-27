@@ -169,6 +169,28 @@ describe("тай-брейк", () => {
     expect(s.inTiebreak).toBe(false);
   });
 
+  // Тай-брейк начинает команда 0 (SERVE_ORDER[12 % 4] = A1 при старте с A1).
+  // По правилу 6 новый сет должна начать другая пара — независимо от счёта ТБ.
+  it("после тай-брейка 7-0 новый сет начинает соперник (не та пара, что начинала ТБ)", () => {
+    let s = to6to6();
+    expect(s.serving.team).toBe(0); // ТБ начинает команда 0
+    for (let p = 0; p < 7; p++) s = scorePoint(s, 0); // 7-0
+    expect(s.currentSet).toBe(1);
+    expect(s.serving.team).toBe(1);
+    expect(s.serving.player).toBe(0); // непрерывная ротация: B1
+    expect(s.serving.side).toBe("deuce");
+  });
+
+  it("после тай-брейка 7-5 первый подающий нового сета такой же, как при 7-0", () => {
+    let s = to6to6();
+    // 7-5: 6-5, затем команда 0 берёт 7-е очко
+    const seq: TeamIndex[] = [0,1,0,1,0,1,0,1,0,1, 0,0]; // 5-5 → 6-5 → 7-5
+    for (const t of seq) s = scorePoint(s, t);
+    expect(s.currentSet).toBe(1);
+    expect(s.serving.team).toBe(1);
+    expect(s.serving.player).toBe(0);
+  });
+
   it("подача в тай-брейке меняется после 1-го очка и держится 2 очка", () => {
     let s = to6to6();
     const s0 = { ...s.serving }; // стартовый подающий тай-брейка

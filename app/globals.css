@@ -13,6 +13,18 @@
 @keyframes pulse2 { 0%,100% { opacity: 1 } 50% { opacity: .3 } }
 @keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(198,242,78,.45) } 100% { box-shadow: 0 0 0 12px rgba(198,242,78,0) } }
 
+/* загрузочный экран PWA — прыжок мяча (CSS, работает до гидратации) */
+@keyframes ball-bounce {
+  0%,100% { transform: translateY(-46px); animation-timing-function: cubic-bezier(.62,0,.9,.42); }
+  48% { transform: translateY(0) scaleY(1); animation-timing-function: cubic-bezier(.1,.6,.4,1); }
+  52% { transform: translateY(0) scaleY(.86); }
+}
+@keyframes ball-shadow {
+  0%,100% { transform: scaleX(.55); opacity: .22; }
+  50% { transform: scaleX(1); opacity: .5; }
+}
+.splash-fade-out { opacity: 0; transition: opacity .45s ease; }
+
 html, body { margin: 0; background: #0a0b0a; -webkit-font-smoothing: antialiased; }
 body {
   background:

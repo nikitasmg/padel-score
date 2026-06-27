@@ -1,5 +1,5 @@
 import type { MatchState } from "@/lib/padel/types";
-import { courtPositions, serveOrigin, serveTarget } from "@/lib/padel/serve";
+import { courtPositions, endsSwapped, serveOrigin, serveTarget } from "@/lib/padel/serve";
 
 const X = { left: 40, right: 306 };
 const Y = { top: 46, bottom: 110 };
@@ -11,7 +11,7 @@ export function CourtDiagram({ match }: { match: MatchState }) {
   const positions = courtPositions(match);
   // Подача идёт от квадрата стороны deuce/ad (меняется каждое очко), а не от
   // фиксированной позиции игрока — поэтому диагональ перекидывается.
-  const origin = serveOrigin(match.serving.team, match.serving.side);
+  const origin = serveOrigin(match.serving.team, match.serving.side, endsSwapped(match));
   const target = serveTarget(origin);
   const tBox = { x: BOX_X[target.x], y: BOX_Y[target.y] };
 

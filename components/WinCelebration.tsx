@@ -32,7 +32,7 @@ export function WinCelebration({
           : null;
     if (!next) return;
     setCel(next);
-    const id = setTimeout(() => setCel(null), next.kind === "set" ? 2600 : 900);
+    const id = setTimeout(() => setCel(null), next.kind === "set" ? 2600 : 1200);
     return () => clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seq]);
@@ -61,6 +61,17 @@ export function WinCelebration({
           exit={{ opacity: 0 }}
           className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center overflow-hidden"
         >
+          {/* большая вспышка основного цвета на весь экран */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: [0, big ? 0.78 : 0.62, 0], scale: [0.8, 1.1, 1.18] }}
+            transition={{ duration: cel.kind === "set" ? 1.3 : 0.95, ease: "easeOut", times: [0, 0.14, 1] }}
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(72% 85% at 50% 50%,rgba(198,242,78,.95),rgba(198,242,78,.28) 48%,transparent 72%)",
+            }}
+          />
           {cel.kind === "set" &&
             confetti.map((c, i) => (
               <motion.span

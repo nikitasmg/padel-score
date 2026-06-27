@@ -1,11 +1,11 @@
 import type { MatchState } from "@/lib/padel/types";
-import { serveOrigin, serveTarget } from "@/lib/padel/serve";
+import { endsSwapped, serveOrigin, serveTarget } from "@/lib/padel/serve";
 
 const X = { left: 22, right: 116 };
 const Y = { top: 18, bottom: 50 };
 
 export function ServeMiniCourt({ match }: { match: MatchState }) {
-  const origin = serveOrigin(match.serving.team, match.serving.side);
+  const origin = serveOrigin(match.serving.team, match.serving.side, endsSwapped(match));
   const target = serveTarget(origin);
   return (
     <svg viewBox="0 0 138 68" className="w-[138px] h-[68px] block">

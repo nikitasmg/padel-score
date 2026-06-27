@@ -16,7 +16,7 @@ function winGames(s: ReturnType<typeof createMatch>, t: TeamIndex, n: number) {
 
 describe("diffMatch", () => {
   it("без prev — событий нет", () => {
-    expect(diffMatch(null, m())).toEqual({ pointChanged: false, matchWon: false });
+    expect(diffMatch(null, m())).toEqual({ pointChanged: false, endsChanged: false, matchWon: false });
   });
 
   it("обычное очко — pointChanged, без гейма/сета", () => {
@@ -26,6 +26,21 @@ describe("diffMatch", () => {
     expect(e.pointChanged).toBe(true);
     expect(e.gameWonBy).toBeUndefined();
     expect(e.setWonBy).toBeUndefined();
+  });
+
+  it("pointWonBy — команда, выигравшая розыгрыш (в т.ч. на выигрыше гейма)", () => {
+    const s1 = m();
+    expect(diffMatch(s1, scorePoint(s1, 1)).pointWonBy).toBe(1);
+    let s = m();
+    for (let p = 0; p < 3; p++) s = scorePoint(s, 0); // 40-0
+    expect(diffMatch(s, scorePoint(s, 0)).pointWonBy).toBe(0); // решающее очко гейма
+  });
+
+  it("endsChanged — после нечётного гейма стороны меняются", () => {
+    let s1 = m();
+    for (let p = 0; p < 3; p++) s1 = scorePoint(s1, 0); // 40-0, гейм ещё не взят
+    const s2 = scorePoint(s1, 0); // 1-й гейм взят → смена сторон
+    expect(diffMatch(s1, s2).endsChanged).toBe(true);
   });
 
   it("выигран гейм — gameWonBy", () => {

@@ -7,6 +7,7 @@ import { pointLabel } from "@/lib/padel/format";
 import type { MatchState, TeamIndex } from "@/lib/padel/types";
 import { AnimatedPoint } from "@/components/AnimatedPoint";
 import { WinCelebration } from "@/components/WinCelebration";
+import { BroadcastEffects } from "@/components/BroadcastEffects";
 
 function names(m: MatchState, t: TeamIndex) {
   return m.teams[t].players.map((p) => p.name).join(" / ");
@@ -54,6 +55,7 @@ export default function BroadcastPage() {
           "radial-gradient(80% 130% at 50% 130%,rgba(36,92,48,.34),transparent 62%),radial-gradient(60% 90% at 50% -25%,rgba(198,242,78,.10),transparent 60%),#070807",
       }}
     >
+      <BroadcastEffects match={match} />
       <WinCelebration match={match} variant="broadcast" />
 
       {/* LIVE corner */}
@@ -70,7 +72,7 @@ export default function BroadcastPage() {
       </div>
 
       {/* main split — гигантский счёт во весь экран */}
-      <div className="grid h-dvh" style={{ gridTemplateColumns: "1fr 2px 1fr" }}>
+      <div className="relative z-10 grid h-dvh" style={{ gridTemplateColumns: "1fr 2px 1fr" }}>
         <TeamColumn
           side="left"
           name={names(match, 0)}

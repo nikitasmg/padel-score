@@ -1,6 +1,16 @@
 import type { Config, MatchState, MatchSnapshot, Team, TeamIndex, TeamScore } from "./types";
 import { isGameWon, isTiebreakWon, setsToWin } from "./rules";
-import { nextServer } from "./serve";
+import { nextServer, SERVE_ORDER } from "./serve";
+
+// Сколько геймов уже сыграно во всём матче (по всем сетам). Тай-брейк считается
+// одним геймом — попадает в счётчик, когда завершён (7-6). Подача — непрерывная
+// ротация по SERVE_ORDER, поэтому первого подающего нового гейма/сета берём
+// строго по этому счётчику, а не выводим из последнего подающего тай-брейка
+// (иначе при разной длине тай-брейка соперник определялся неверно).
+function gamesPlayed(s: MatchState): number {
+  const sum = (a: number[]) => a.reduce((x, y) => x + y, 0);
+  return sum(s.score[0].games) + sum(s.score[1].games);
+}
 
 function emptyTeamScore(): TeamScore {
   return { points: 0, games: [0], sets: 0 };
@@ -62,7 +72,8 @@ export function scorePoint(state: MatchState, team: TeamIndex): MatchState {
 
   resolveSetAndMatch(s, team, other);
   if (s.status === "in_progress") {
-    const ns = nextServer({ team: s.serving.team, player: s.serving.player });
+    // Первый подающий следующего гейма (или тай-брейка) — по непрерывной ротации.
+    const ns = SERVE_ORDER[gamesPlayed(s) % SERVE_ORDER.length];
     s.serving = { team: ns.team, player: ns.player, side: "deuce" };
   }
   return s;

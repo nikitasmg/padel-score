@@ -1,5 +1,9 @@
 /* RALLY service worker — оффлайн-кэш. У приложения нет API, всё работает на клиенте. */
-const CACHE = "rally-v2";
+const CACHE = "rally-v3";
+// В dev (localhost) чанки имеют стабильные имена, но меняющееся содержимое —
+// поэтому cache-first отдаёт устаревший JS и ломает приложение. На localhost
+// работаем строго network-first и ничего не кэшируем.
+const DEV = self.location.hostname === "localhost" || self.location.hostname === "127.0.0.1";
 
 // Маршруты-страницы, которые предзагружаем при установке, чтобы приложение
 // открывалось без сети сразу после первой онлайн-загрузки.
@@ -46,6 +50,13 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
+
+  // На localhost — только сеть (кэш как офлайн-резерв), чтобы не отдавать
+  // устаревшие dev-чанки. SW здесь по сути отключён.
+  if (DEV) {
+    event.respondWith(fetch(req).catch(() => caches.match(req).then((c) => c || Response.error())));
+    return;
+  }
 
   // Переходы по страницам: stale-while-revalidate.
   // Отдаём кэш мгновенно (важно для офлайна — не ждём таймаут сети),
