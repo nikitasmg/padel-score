@@ -46,4 +46,35 @@ describe("announcements", () => {
   it("нет крупного события и нет смены сторон — пусто", () => {
     expect(announcements(base, match)).toEqual([]);
   });
+
+  const scored = (inTiebreak: boolean, p0: number, p1: number) =>
+    ({ teams, winner: undefined, inTiebreak, score: [{ points: p0 }, { points: p1 }] }) as unknown as MatchState;
+
+  it("очко — новый счёт забившей команды и имена", () => {
+    expect(announcements({ ...base, pointWonBy: 0 }, scored(false, 1, 0))).toEqual(["15, Иван и Пётр"]);
+    expect(announcements({ ...base, pointWonBy: 1 }, scored(false, 1, 2))).toEqual(["30, B1 и B2"]);
+  });
+
+  it("равный счёт в концовке гейма — «ровно»", () => {
+    expect(announcements({ ...base, pointWonBy: 0 }, scored(false, 3, 3))).toEqual(["Ровно"]);
+  });
+
+  it("преимущество — «больше» + имена", () => {
+    expect(announcements({ ...base, pointWonBy: 0 }, scored(false, 4, 3))).toEqual(["Больше, Иван и Пётр"]);
+  });
+
+  it("тай-брейк — просто число очков забившей команды", () => {
+    expect(announcements({ ...base, pointWonBy: 1 }, scored(true, 2, 5))).toEqual(["5, B1 и B2"]);
+  });
+
+  it("очко и смена сторон в тай-брейке", () => {
+    expect(announcements({ ...base, pointWonBy: 0, endsChanged: true }, scored(true, 6, 5))).toEqual([
+      "6, Иван и Пётр",
+      "Смена сторон",
+    ]);
+  });
+
+  it("выигрыш гейма не озвучивает очко", () => {
+    expect(announcements({ ...base, gameWonBy: 0, pointWonBy: 0 }, scored(false, 0, 0))).toEqual(["Гейм, Иван и Пётр"]);
+  });
 });
