@@ -1,27 +1,35 @@
-# Настройка кнопок геймпада + кнопка «назад» — прогресс (subagent-driven)
+# Голосовая озвучка трансляции — прогресс (subagent-driven)
 
-Plan: docs/superpowers/plans/2026-06-25-gamepad-button-config.md
-Spec: docs/superpowers/specs/2026-06-25-gamepad-button-config-design.md
-Branch: feature/gamepad-button-config
-Base (branch start): 5fb7cd6
+Plan: docs/superpowers/plans/2026-06-29-voice-announcements.md
+Spec: docs/superpowers/specs/2026-06-29-voice-announcements-design.md
+Branch: feature/voice-announcements
+Base (branch start): 14ee804
 
 ## Журнал
 
-Task 1: complete (commits f3a8608..220ff6d, review clean — spec ✅, quality Approved, 9/9 тестов mapping).
-Task 2: complete (commits 4196cd3..920219e, review clean — spec ✅, quality Approved, 3/3 тестов clickerStore).
-  ⚠️ resolveBindings закрыт Task 1. setBinding сбрасывает learning:null — намеренно (по плану Task 3).
-Task 3: complete (commits e05294f..dce8836, review clean — spec ✅, quality Approved). build (tsc) ок, без юнит-теста (интеграция).
-  ⚠️ подпись Claude в коммитах — проверено по 5fb7cd6..HEAD: подписей нет. npm run lint сломан предсуществующе (next lint).
-Task 4: complete (commits 9020ab8..f05911f, review clean — spec ✅, quality Approved). build ок.
-  ⚠️ ModeRow active рендерит border-accent/30 + залитую точку (исходный компонент) — видимое отличие есть.
+Task 1: complete (commit 6d71b0c, review clean — spec ✅, quality Approved, 7/7 тестов phrases).
+  Minor: phrases.ts:85 каст `as TeamIndex | undefined` косметический (по брифу). На финал.
+Task 2: complete (commits 1b4b607..653ef18, review clean — spec ✅, quality Approved, 9/9 тестов speak).
+  Important×2 (тесты кэша голоса + предпочтения localService) — устранены фиксом 653ef18, ре-ревью чисто.
+Task 3: complete (commit d2885be, review clean — spec ✅, quality Approved, 3/3 тестов useVoiceSetting). Замечаний нет.
+Task 4: complete (commit 74308dc, review clean — spec ✅, quality Approved, 4/4 тестов useVoiceAnnouncements).
+  Отклонение от плана: тест «не дублирует» в брифе ждал 1 вызов speak, но выигрыш 1-го гейма меняет стороны →
+  announcements даёт 2 фразы. Реализация верна; тест исправлен на «нет роста вызовов» (74308dc). Ре-ревью одобрил.
+Task 5: complete (commits 6c3bf01..7a46f29, review clean — spec ✅, quality Approved, 3/3 тестов VoiceControl).
+  Адаптации теста: vi.hoisted для моков, явный import jest-dom (setupFiles пуст). Important (assert warmUp в тесте кнопки) — фикс 7a46f29.
+Task 6: complete (commit 83c48b9, review clean — spec ✅, quality Approved). 108/108 тестов, tsc чисто.
+  lint (next lint) сломан предсуществующе ("Invalid project directory") — не связан с изменением.
 
-## Финальное ревью (opus, по 5fb7cd6..158add7)
+## Все задачи завершены — на финальное whole-branch ревью.
 
-Вердикт: READY TO MERGE. Critical/Important — нет. Реализация точно по плану:
-настраиваемые bindings, снятие кнопки со старого действия (-1), persist bindings / runtime learning,
-learn-mode роутинг, кнопка назад. 74/74 тестов, build/tsc ок. lint сломан предсуществующе.
-Применены две полировки по рекомендации: buttonLabel(-1)→«не назначено», guard `index<0` в buttonToAction (+2 теста).
+## Финальное whole-branch ревью (opus, 14ee804..83c48b9): READY TO MERGE WITH FIXES
+Critical нет. pointSeq-выбор и дедуп подтверждены корректными. Important×2:
+  1. iOS: возврат с enabled=true без жеста → тишина.
+  2. voiceschanged не обрабатывался → ложное «голос недоступен» в «Проверить голос».
+Решение пользователя: плашка «Включить звук» + Minor-полировка (cancel при unmount, stopPropagation на обёртку).
 
-## Minor-находки
+## Фикс-волна (commit 7fbebac) + ре-ревью (sonnet): READY TO MERGE = YES
+voiceschanged-листенер, checkRussianVoice (event+timeout), cancelSpeech на unmount, iOS-плашка, stopPropagation обёртки.
+116/116 тестов, tsc чисто. Остался 1 Minor: setState после unmount в checkRussianVoice (cold load + клик + уход <1500мс; React18 no-op). Не блокер, не фиксим.
 
-- Task 1 (Minor): buttonToAction(-1, bindings) вернёт действие, если оно отвязано (=-1). Реальные индексы кнопок >=0, поэтому на практике безопасно. Фикс — guard `if (index < 0) return null;`. Решит финальное ревью.
+## ВСЕ ЗАДАЧИ + ФИКСЫ ЗАВЕРШЕНЫ. Ветка готова к интеграции.
