@@ -38,21 +38,26 @@ export function BroadcastEffects({ match }: { match: MatchState }) {
   return (
     <>
       {/* вспышка за цифрами — низкий z, под счётом */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 z-0">
         <AnimatePresence>
           {flash && (
             <motion.div
               key={flash.key}
-              initial={{ opacity: 0, scale: 0.6 }}
-              animate={{ opacity: [0, 1, 1, 0], scale: [0.6, 1.2, 1.3, 1.5] }}
+              initial={{ opacity: 0, scale: 0.6, x: "-50%", y: "-50%" }}
+              animate={{ opacity: [0, 1, 1, 0], scale: [0.6, 1.15, 1.25, 1.4], x: "-50%", y: "-50%" }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1.55, ease: "easeOut", times: [0, 0.1, 0.55, 1] }}
-              className="absolute top-[-15%] h-[130%] w-[62%]"
+              className="absolute rounded-full"
               style={{
-                left: flash.team === 0 ? "-6%" : "44%",
+                // центр круга под цифрами своей половины
+                left: flash.team === 0 ? "25%" : "75%",
+                top: "58%",
+                // круг чуть крупнее счёта (цифры ~72vh)
+                width: "min(48vw,80vh)",
+                height: "min(48vw,80vh)",
                 background:
-                  "radial-gradient(72% 60% at 50% 54%,rgba(214,255,90,1),rgba(198,242,78,.85) 30%,rgba(198,242,78,.4) 52%,rgba(198,242,78,.12) 70%,transparent 84%)",
-                filter: "blur(2px)",
+                  "radial-gradient(circle,rgba(214,255,90,1),rgba(198,242,78,.85) 26%,rgba(198,242,78,.42) 46%,rgba(198,242,78,.14) 66%,transparent 80%)",
+                filter: "blur(28px)",
               }}
             />
           )}
