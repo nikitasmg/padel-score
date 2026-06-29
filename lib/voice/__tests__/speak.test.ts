@@ -80,4 +80,39 @@ describe("speak.ts", () => {
     expect(speakFn).toHaveBeenCalledTimes(1);
     expect((speakFn.mock.calls[0][0] as FakeUtterance).volume).toBe(0);
   });
+
+  it("кэширует найденный русский голос (getVoices вызывается один раз)", async () => {
+    const voices = makeVoices(["ru-RU"]);
+    const getVoices = vi.fn(() => voices);
+    // @ts-expect-error — стаб браузерного API в jsdom
+    global.SpeechSynthesisUtterance = FakeUtterance;
+    // @ts-expect-error — стаб браузерного API в jsdom
+    global.window.speechSynthesis = { speak: vi.fn(), getVoices };
+    const { getRussianVoice } = await import("@/lib/voice/speak");
+    getRussianVoice();
+    getRussianVoice();
+    expect(getVoices).toHaveBeenCalledTimes(1);
+  });
+
+  it("не кэширует отсутствие голоса — повторяет поиск", async () => {
+    const getVoices = vi.fn(() => makeVoices(["en-US"]));
+    // @ts-expect-error — стаб браузерного API в jsdom
+    global.SpeechSynthesisUtterance = FakeUtterance;
+    // @ts-expect-error — стаб браузерного API в jsdom
+    global.window.speechSynthesis = { speak: vi.fn(), getVoices };
+    const { getRussianVoice } = await import("@/lib/voice/speak");
+    getRussianVoice();
+    getRussianVoice();
+    expect(getVoices).toHaveBeenCalledTimes(2);
+  });
+
+  it("предпочитает локальный русский голос сетевому", async () => {
+    const voices = [
+      { lang: "ru-RU", name: "net", localService: false },
+      { lang: "ru-RU", name: "local", localService: true },
+    ] as SpeechSynthesisVoice[];
+    installSpeech(voices);
+    const { getRussianVoice } = await import("@/lib/voice/speak");
+    expect(getRussianVoice()?.name).toBe("local");
+  });
 });
