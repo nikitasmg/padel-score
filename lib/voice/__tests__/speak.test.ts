@@ -17,12 +17,34 @@ function makeVoices(langs: string[]) {
 }
 
 function installSpeech(voices: SpeechSynthesisVoice[]) {
-  const speak = vi.fn();
+  const speakFn = vi.fn();
+  const cancel = vi.fn();
+  let voicesArr = [...voices];
+  const handlers = new Map<string, Array<() => void>>();
+
+  const addEventListener = vi.fn((event: string, handler: () => void) => {
+    if (!handlers.has(event)) handlers.set(event, []);
+    handlers.get(event)!.push(handler);
+  });
+  const removeEventListener = vi.fn((event: string, handler: () => void) => {
+    const arr = handlers.get(event);
+    if (arr) {
+      const idx = arr.indexOf(handler);
+      if (idx !== -1) arr.splice(idx, 1);
+    }
+  });
+  const fireVoicesChanged = () => {
+    const arr = handlers.get("voiceschanged") ?? [];
+    // Копируем массив, чтобы removeEventListener внутри обработчика не ломал итерацию.
+    [...arr].forEach((h) => h());
+  };
+  const setVoices = (newVoices: SpeechSynthesisVoice[]) => { voicesArr = newVoices; };
+
   // @ts-expect-error — стаб браузерного API в jsdom
   global.SpeechSynthesisUtterance = FakeUtterance;
   // @ts-expect-error — стаб браузерного API в jsdom
-  global.window.speechSynthesis = { speak, getVoices: () => voices };
-  return speak;
+  global.window.speechSynthesis = { speak: speakFn, cancel, getVoices: () => voicesArr, addEventListener, removeEventListener };
+  return { speakFn, cancel, fireVoicesChanged, setVoices };
 }
 
 beforeEach(() => {
@@ -56,7 +78,7 @@ describe("speak.ts", () => {
   });
 
   it("speak произносит текст русским голосом", async () => {
-    const speakFn = installSpeech(makeVoices(["ru-RU"]));
+    const { speakFn } = installSpeech(makeVoices(["ru-RU"]));
     const { speak } = await import("@/lib/voice/speak");
     speak("Гейм");
     expect(speakFn).toHaveBeenCalledTimes(1);
@@ -67,14 +89,14 @@ describe("speak.ts", () => {
   });
 
   it("speak игнорирует пустой текст", async () => {
-    const speakFn = installSpeech(makeVoices(["ru-RU"]));
+    const { speakFn } = installSpeech(makeVoices(["ru-RU"]));
     const { speak } = await import("@/lib/voice/speak");
     speak("");
     expect(speakFn).not.toHaveBeenCalled();
   });
 
   it("warmUp произносит беззвучную фразу", async () => {
-    const speakFn = installSpeech(makeVoices(["ru-RU"]));
+    const { speakFn } = installSpeech(makeVoices(["ru-RU"]));
     const { warmUp } = await import("@/lib/voice/speak");
     warmUp();
     expect(speakFn).toHaveBeenCalledTimes(1);
@@ -114,5 +136,62 @@ describe("speak.ts", () => {
     installSpeech(voices);
     const { getRussianVoice } = await import("@/lib/voice/speak");
     expect(getRussianVoice()?.name).toBe("local");
+  });
+
+  // --- cancelSpeech ---
+
+  it("cancelSpeech вызывает speechSynthesis.cancel()", async () => {
+    const { cancel } = installSpeech(makeVoices([]));
+    const { cancelSpeech } = await import("@/lib/voice/speak");
+    cancelSpeech();
+    expect(cancel).toHaveBeenCalledTimes(1);
+  });
+
+  it("cancelSpeech — нет-оп без поддержки синтеза", async () => {
+    // speechSynthesis не установлен (beforeEach его удаляет)
+    const { cancelSpeech } = await import("@/lib/voice/speak");
+    expect(() => cancelSpeech()).not.toThrow();
+  });
+
+  // --- voiceschanged обновляет кэш ---
+
+  it("voiceschanged обновляет кэш голоса после холодного старта", async () => {
+    const { fireVoicesChanged, setVoices } = installSpeech(makeVoices([]));
+    const { getRussianVoice } = await import("@/lib/voice/speak");
+    // Первый вызов: голоса пусты, кэш не записан, но слушатель подключён.
+    expect(getRussianVoice()).toBeNull();
+    setVoices(makeVoices(["ru-RU"]));
+    fireVoicesChanged();
+    // После события кэш обновлён.
+    expect(getRussianVoice()?.lang).toBe("ru-RU");
+  });
+
+  // --- checkRussianVoice ---
+
+  it("checkRussianVoice — cb(true) синхронно при наличии голоса", async () => {
+    installSpeech(makeVoices(["ru-RU"]));
+    const { checkRussianVoice } = await import("@/lib/voice/speak");
+    let result: boolean | null = null;
+    checkRussianVoice((found) => { result = found; });
+    expect(result).toBe(true);
+  });
+
+  it("checkRussianVoice — cb(false) без поддержки синтеза", async () => {
+    // speechSynthesis не установлен
+    const { checkRussianVoice } = await import("@/lib/voice/speak");
+    let result: boolean | null = null;
+    checkRussianVoice((found) => { result = found; });
+    expect(result).toBe(false);
+  });
+
+  it("checkRussianVoice — cb(true) после voiceschanged когда голос появился", async () => {
+    const { fireVoicesChanged, setVoices } = installSpeech(makeVoices([]));
+    const { checkRussianVoice } = await import("@/lib/voice/speak");
+    let result: boolean | null = null;
+    checkRussianVoice((found) => { result = found; });
+    expect(result).toBeNull(); // ещё не вызван — ждём событие
+    setVoices(makeVoices(["ru-RU"]));
+    fireVoicesChanged(); // триггерим voiceschanged — должен вызвать cb(true)
+    expect(result).toBe(true);
   });
 });

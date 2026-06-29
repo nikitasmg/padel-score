@@ -2,10 +2,10 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { createMatch, scorePoint } from "@/lib/padel/engine";
 import type { Config, Team, TeamIndex } from "@/lib/padel/types";
-import { speak } from "@/lib/voice/speak";
+import { speak, cancelSpeech } from "@/lib/voice/speak";
 import { useVoiceAnnouncements } from "@/lib/voice/useVoiceAnnouncements";
 
-vi.mock("@/lib/voice/speak", () => ({ speak: vi.fn() }));
+vi.mock("@/lib/voice/speak", () => ({ speak: vi.fn(), cancelSpeech: vi.fn() }));
 
 const cfg: Config = { sets: 3, gamesPerSet: 6, goldenPoint: true, tiebreak: true };
 const teams: [Team, Team] = [
@@ -51,6 +51,15 @@ describe("useVoiceAnnouncements", () => {
     });
     rerender({ m: m1 });
     expect(speak).not.toHaveBeenCalled();
+  });
+
+  it("отменяет очередь синтеза при размонтировании", () => {
+    const m0 = createMatch(cfg, teams, 1000);
+    const { unmount } = renderHook(({ m }) => useVoiceAnnouncements(m, true), {
+      initialProps: { m: m0 },
+    });
+    unmount();
+    expect(cancelSpeech).toHaveBeenCalled();
   });
 
   it("не озвучивает событие, случившееся до включения", () => {

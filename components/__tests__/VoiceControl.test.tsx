@@ -10,6 +10,8 @@ const voiceMocks = vi.hoisted(() => ({
   getRussianVoice: vi.fn(() => ({ lang: "ru-RU" })),
   speak: vi.fn(),
   warmUp: vi.fn(),
+  checkRussianVoice: vi.fn((cb: (found: boolean) => void) => cb(true)),
+  cancelSpeech: vi.fn(),
 }));
 vi.mock("@/lib/voice/speak", () => voiceMocks);
 vi.mock("@/lib/voice/useVoiceAnnouncements", () => ({ useVoiceAnnouncements: vi.fn() }));
@@ -48,5 +50,16 @@ describe("VoiceControl", () => {
     fireEvent.click(screen.getByRole("button", { name: /проверить голос/i }));
     expect(speak).toHaveBeenCalledWith("Проверка озвучки, гейм за командой один");
     expect(warmUp).toHaveBeenCalled();
+  });
+
+  it("кнопка «Включить звук» появляется при включённой озвучке и исчезает после тапа", async () => {
+    localStorage.setItem("padel:voice-enabled", "1");
+    render(<VoiceControl match={match} />);
+    // useVoiceSetting читает localStorage в useEffect → enabled становится true после первого рендера.
+    const unlockBtn = await screen.findByRole("button", { name: /включить звук/i });
+    expect(unlockBtn).toBeInTheDocument();
+    fireEvent.click(unlockBtn);
+    expect(warmUp).toHaveBeenCalled();
+    expect(screen.queryByRole("button", { name: /включить звук/i })).toBeNull();
   });
 });

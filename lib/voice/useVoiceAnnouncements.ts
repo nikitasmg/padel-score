@@ -3,12 +3,15 @@ import { useEffect, useRef } from "react";
 import { useScoreEvents } from "@/lib/padel/useScoreEvents";
 import type { MatchState } from "@/lib/padel/types";
 import { announcements } from "./phrases";
-import { speak } from "./speak";
+import { speak, cancelSpeech } from "./speak";
 
 /** Произносит фразы при крупных событиях счёта. Страж по pointSeq — против дублей (ре-рендеры, StrictMode). */
 export function useVoiceAnnouncements(match: MatchState, enabled: boolean): void {
   const { event, pointSeq } = useScoreEvents(match);
   const lastSpoken = useRef(0);
+
+  // Отменяем очередь синтеза при размонтировании (уход с /broadcast).
+  useEffect(() => () => { cancelSpeech(); }, []);
 
   useEffect(() => {
     // Пока выключено — держим указатель на текущем pointSeq, чтобы при включении

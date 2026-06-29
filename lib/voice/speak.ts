@@ -10,6 +10,15 @@ function pickRussian(voices: SpeechSynthesisVoice[]): SpeechSynthesisVoice | nul
 }
 
 let cached: SpeechSynthesisVoice | null = null;
+let listenerAttached = false;
+
+function ensureVoicesListener(): void {
+  if (listenerAttached || !isSpeechSupported()) return;
+  listenerAttached = true;
+  window.speechSynthesis.addEventListener?.("voiceschanged", () => {
+    cached = pickRussian(window.speechSynthesis.getVoices());
+  });
+}
 
 /**
  * Лучший русский голос. Голоса грузятся асинхронно — ранние вызовы могут
@@ -17,6 +26,7 @@ let cached: SpeechSynthesisVoice | null = null;
  */
 export function getRussianVoice(): SpeechSynthesisVoice | null {
   if (!isSpeechSupported()) return null;
+  ensureVoicesListener();
   if (cached) return cached;
   cached = pickRussian(window.speechSynthesis.getVoices());
   return cached;
@@ -39,4 +49,29 @@ export function warmUp(): void {
   const u = new SpeechSynthesisUtterance(" ");
   u.volume = 0;
   window.speechSynthesis.speak(u);
+}
+
+export function cancelSpeech(): void {
+  if (!isSpeechSupported()) return;
+  window.speechSynthesis.cancel();
+}
+
+/**
+ * Надёжная проверка русского голоса для кнопки «Проверить голос».
+ * На холодной загрузке getVoices() пуст до события voiceschanged — поэтому
+ * при отсутствии голоса ждём событие с таймаут-фолбэком.
+ */
+export function checkRussianVoice(cb: (found: boolean) => void, timeoutMs = 1500): void {
+  if (!isSpeechSupported()) { cb(false); return; }
+  if (getRussianVoice()) { cb(true); return; }
+  let done = false;
+  const finish = (found: boolean) => {
+    if (done) return;
+    done = true;
+    window.speechSynthesis.removeEventListener?.("voiceschanged", onChange);
+    cb(found);
+  };
+  const onChange = () => finish(getRussianVoice() !== null);
+  window.speechSynthesis.addEventListener?.("voiceschanged", onChange);
+  setTimeout(() => finish(getRussianVoice() !== null), timeoutMs);
 }

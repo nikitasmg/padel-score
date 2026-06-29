@@ -4,7 +4,7 @@ import { Volume2, VolumeX } from "lucide-react";
 import type { MatchState } from "@/lib/padel/types";
 import { useVoiceSetting } from "@/lib/voice/useVoiceSetting";
 import { useVoiceAnnouncements } from "@/lib/voice/useVoiceAnnouncements";
-import { isSpeechSupported, getRussianVoice, speak, warmUp } from "@/lib/voice/speak";
+import { isSpeechSupported, speak, warmUp, checkRussianVoice } from "@/lib/voice/speak";
 
 /**
  * Угловой контрол озвучки на трансляции: тумблер вкл/выкл и проверка русского голоса.
@@ -13,6 +13,7 @@ import { isSpeechSupported, getRussianVoice, speak, warmUp } from "@/lib/voice/s
 export function VoiceControl({ match }: { match: MatchState }) {
   const [enabled, setEnabled] = useVoiceSetting();
   const [voiceFound, setVoiceFound] = useState<boolean | null>(null);
+  const [warmed, setWarmed] = useState(false);
   useVoiceAnnouncements(match, enabled);
 
   if (!isSpeechSupported()) return null;
@@ -20,18 +21,35 @@ export function VoiceControl({ match }: { match: MatchState }) {
   const toggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     warmUp(); // разблокировка синтеза тем же жестом (iOS)
+    setWarmed(true);
     setEnabled(!enabled);
   };
 
   const test = (e: React.MouseEvent) => {
     e.stopPropagation();
     warmUp();
-    setVoiceFound(getRussianVoice() !== null);
+    setWarmed(true);
+    checkRussianVoice((found) => setVoiceFound(found));
     speak("Проверка озвучки, гейм за командой один");
   };
 
+  const unlock = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    warmUp();
+    setWarmed(true);
+  };
+
   return (
-    <div className="absolute bottom-5 right-10 flex flex-col items-end gap-1">
+    <div className="absolute bottom-5 right-10 flex flex-col items-end gap-1" onClick={(e) => e.stopPropagation()}>
+      {enabled && !warmed && (
+        <button
+          type="button"
+          onClick={unlock}
+          className="flex items-center gap-2 rounded-full bg-accent px-4 py-1.5 font-mono text-[12px] font-bold text-black"
+        >
+          <Volume2 className="h-[14px] w-[14px]" /> Включить звук
+        </button>
+      )}
       <button
         type="button"
         onClick={toggle}
