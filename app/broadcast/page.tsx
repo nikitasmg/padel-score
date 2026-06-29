@@ -8,7 +8,7 @@ import type { MatchState, TeamIndex } from "@/lib/padel/types";
 import { AnimatedPoint } from "@/components/AnimatedPoint";
 import { WinCelebration } from "@/components/WinCelebration";
 import { BroadcastEffects } from "@/components/BroadcastEffects";
-import { VoiceControl } from "@/components/VoiceControl";
+import { VoiceAnnouncer } from "@/components/VoiceAnnouncer";
 
 function names(m: MatchState, t: TeamIndex) {
   return m.teams[t].players.map((p) => p.name).join(" / ");
@@ -57,7 +57,7 @@ export default function BroadcastPage() {
       }}
     >
       <BroadcastEffects match={match} />
-      <VoiceControl match={match} />
+      <VoiceAnnouncer match={match} />
       <WinCelebration match={match} variant="broadcast" />
 
       {/* LIVE corner */}

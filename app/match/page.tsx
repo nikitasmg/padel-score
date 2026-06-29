@@ -10,6 +10,8 @@ import { useClickerStore } from "@/store/clickerStore";
 import { clock, sideLabel } from "@/lib/padel/format";
 import { WinCelebration } from "@/components/WinCelebration";
 import { GamepadLink } from "@/components/GamepadLink";
+import { VoiceControl } from "@/components/VoiceControl";
+import { VoiceAnnouncer } from "@/components/VoiceAnnouncer";
 
 export default function MatchPage() {
   const router = useRouter();
@@ -46,6 +48,7 @@ export default function MatchPage() {
     <>
       <div className="relative px-[22px] pt-[max(env(safe-area-inset-top),14px)] min-h-dvh flex flex-col">
         <WinCelebration match={match} variant="match" />
+        <VoiceAnnouncer match={match} />
         {/* top bar */}
         <div className="flex items-center justify-between mb-[22px]">
           <div className="flex items-center gap-[9px]">
@@ -74,6 +77,8 @@ export default function MatchPage() {
           </div>
           <CourtDiagram match={match} />
         </div>
+
+        <VoiceControl />
 
         <ScoreButtons
           onA={() => point(0)}
