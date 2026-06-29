@@ -47,5 +47,6 @@ describe("VoiceControl", () => {
     render(<VoiceControl match={match} />);
     fireEvent.click(screen.getByRole("button", { name: /проверить голос/i }));
     expect(speak).toHaveBeenCalledWith("Проверка озвучки, гейм за командой один");
+    expect(warmUp).toHaveBeenCalled();
   });
 });
